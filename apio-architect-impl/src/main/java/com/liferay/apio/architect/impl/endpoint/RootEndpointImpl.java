@@ -21,6 +21,7 @@ import com.liferay.apio.architect.documentation.APITitle;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.impl.documentation.Documentation;
 import com.liferay.apio.architect.impl.entrypoint.EntryPoint;
+import com.liferay.apio.architect.impl.entrypoint.CustomOperationsEndpoint;
 import com.liferay.apio.architect.impl.url.ApplicationURL;
 import com.liferay.apio.architect.impl.wiring.osgi.manager.provider.ProviderManager;
 import com.liferay.apio.architect.impl.wiring.osgi.manager.representable.RepresentableManager;
@@ -80,6 +81,15 @@ public class RootEndpointImpl implements RootEndpoint {
 		).nestedCollectionRoutesFunction(
 			nestedName -> _getNestedCollectionRoutesOrFail(name, nestedName)
 		).build();
+	}
+
+	@Override
+	public CustomOperationsEndpoint customOperationsEndpoint(String name) {
+		return new CustomOperationsEndpoint<>(
+			name, _httpServletRequest,
+			() -> _collectionRouterManager.getCollectionRoutesOptional(name),
+			() -> _itemRouterManager.getItemRoutesOptional(name),
+			_pathIdentifierMapperManager::mapToIdentifierOrFail);
 	}
 
 	@Override
