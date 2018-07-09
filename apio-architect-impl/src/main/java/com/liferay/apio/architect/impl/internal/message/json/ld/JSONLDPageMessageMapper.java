@@ -33,6 +33,7 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_SCHEMA_ORG;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
@@ -167,7 +168,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void onFinish(ObjectBuilder objectBuilder, Page<T> page) {
-		objectBuilder.field(
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		jsonObjectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(

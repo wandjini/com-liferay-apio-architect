@@ -31,9 +31,12 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_HYDRA_PROFILE;
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_SCHEMA_ORG;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.impl.internal.message.json.FormMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 
 import org.osgi.service.component.annotations.Component;
@@ -71,7 +74,9 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 	public void mapFormField(
 		ObjectBuilder objectBuilder, FormField formField) {
 
-		objectBuilder.field(
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		jsonObjectBuilder.field(
 			FIELD_NAME_SUPPORTED_PROPERTY
 		).arrayValue(
 		).add(
@@ -131,13 +136,16 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 
 	@Override
 	public void onFinish(ObjectBuilder objectBuilder, Form form) {
-		objectBuilder.field(
+
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		jsonObjectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_CLASS
 		);
 
-		objectBuilder.field(
+		jsonObjectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(

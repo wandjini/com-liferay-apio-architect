@@ -16,7 +16,10 @@ package com.liferay.apio.architect.impl.internal.writer;
 
 import static com.liferay.apio.architect.impl.internal.url.URLCreator.createFormURL;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.liferay.apio.architect.form.Form;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.OperationMapper;
 import com.liferay.apio.architect.impl.internal.request.RequestInfo;
@@ -42,7 +45,8 @@ public class OperationWriter {
 	}
 
 	public void write(Operation operation) {
-		ObjectBuilder operationObjectBuilder = new ObjectBuilder();
+		ObjectBuilder operationObjectBuilder
+			= new JSONObjectBuilder();
 
 		Optional<Form> formOptional = operation.getFormOptional();
 

@@ -15,16 +15,17 @@
 package com.liferay.apio.architect.impl.internal.message.json.hal;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
+import org.osgi.service.component.annotations.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.osgi.service.component.annotations.Component;
 
 /**
  * Represents single models in <a
@@ -110,12 +111,30 @@ public class HALSingleModelMessageMapper<T>
 			"_embedded"
 		).ifElseCondition(
 			optional.isPresent(),
-			builder -> builder.nestedSuffixedField(
-				"_embedded", head, middle
-			).field(
-				optional.get()
-			),
-			builder -> builder.field(head)
+			new Function<ObjectBuilder.FieldStep, ObjectBuilder.FieldStep>() {
+				@Override
+				public ObjectBuilder.FieldStep apply(
+					ObjectBuilder.FieldStep fieldStep) {
+					return fieldStep.nestedSuffixedField(
+						"_embedded", head, middle
+					).field(
+						optional.get()
+					);
+				}
+			},
+//			builder -> builder.nestedSuffixedField(
+//				"_embedded", head, middle
+//			).field(
+//				optional.get()
+//			),
+			new Function<ObjectBuilder.FieldStep, ObjectBuilder.FieldStep>() {
+				@Override
+				public ObjectBuilder.FieldStep apply(
+					ObjectBuilder.FieldStep fieldStep) {
+					return fieldStep.field(head);
+				}
+			}
+//			builder -> builder.field(head)
 		).nestedField(
 			"_links", fieldName, "href"
 		).stringValue(
@@ -308,9 +327,13 @@ public class HALSingleModelMessageMapper<T>
 
 		String[] middle = middleStream.toArray(String[]::new);
 
-		ObjectBuilder.FieldStep builderStep = objectBuilder.field(
-			"_embedded"
-		).ifElseCondition(
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		JSONObjectBuilder.FieldStepImpl embedded =
+			jsonObjectBuilder.field(
+				"_embedded"
+			);
+		ObjectBuilder.FieldStep builderStep = embedded.ifElseCondition(
 			optional.isPresent(),
 			builder -> builder.nestedSuffixedField(
 				"_embedded", head, middle

@@ -100,7 +100,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingAddJsonObjectBuilderCreatesAValidJsonArray() {
-		ObjectBuilder objectBuilder = new ObjectBuilder();
+		JSONObjectBuilder objectBuilder = new JSONObjectBuilder();
 
 		objectBuilder.field(
 			"solution"
@@ -452,7 +452,7 @@ public class JSONObjectBuilderTest {
 	}
 
 	protected JsonObject getJsonObject() {
-		return _objectBuilder.build();
+		return (JsonObject) _objectBuilder.buildAsObject();
 	}
 
 	protected Matcher<JsonElement> isAJsonObjectWithTheFirst() {
@@ -495,7 +495,7 @@ public class JSONObjectBuilderTest {
 
 	private final Matcher<JsonElement> _aJsonObjectWithTheSolution =
 		aJsonObjectWhere("solution", is(aJsonInt(equalTo(42))));
-	private final ObjectBuilder _objectBuilder =
-		new ObjectBuilder();
+	private final JSONObjectBuilder _objectBuilder =
+		new JSONObjectBuilder();
 
 }

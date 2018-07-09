@@ -37,6 +37,7 @@ import static com.liferay.apio.architect.operation.HTTPMethod.GET;
 
 import com.liferay.apio.architect.impl.internal.documentation.Documentation;
 import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.operation.HTTPMethod;
 import com.liferay.apio.architect.operation.Operation;
@@ -186,7 +187,7 @@ public class JSONLDDocumentationMessageMapper
 		).forEach(
 			fieldName -> {
 				ObjectBuilder propertyObjectBuilder =
-					new ObjectBuilder();
+					new JSONObjectBuilder();
 
 				mapProperty(propertyObjectBuilder, fieldName);
 
@@ -209,7 +210,9 @@ public class JSONLDDocumentationMessageMapper
 	public void onFinish(
 		ObjectBuilder objectBuilder, Documentation documentation) {
 
-		objectBuilder.field(
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		jsonObjectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(

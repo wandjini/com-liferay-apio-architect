@@ -19,6 +19,7 @@ import static com.liferay.apio.architect.operation.HTTPMethod.GET;
 import static com.liferay.apio.architect.operation.HTTPMethod.POST;
 import static com.liferay.apio.architect.operation.HTTPMethod.PUT;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.alias.representor.FieldFunction;
@@ -27,6 +28,7 @@ import com.liferay.apio.architect.consumer.TriConsumer;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.impl.internal.documentation.Documentation;
 import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
 import com.liferay.apio.architect.impl.internal.request.RequestInfo;
@@ -84,7 +86,8 @@ public class DocumentationWriter {
 	 * @return the JSON representation of the {@code Documentation}
 	 */
 	public String write() {
-		ObjectBuilder objectBuilder = new ObjectBuilder();
+		ObjectBuilder objectBuilder =
+			new JSONObjectBuilder();
 
 		_writeDocumentationMetadata(objectBuilder);
 
@@ -133,9 +136,7 @@ public class DocumentationWriter {
 
 		_documentationMessageMapper.onFinish(objectBuilder, _documentation);
 
-		JsonObject jsonObject = objectBuilder.build();
-
-		return jsonObject.toString();
+		return objectBuilder.build();
 	}
 
 	/**
@@ -342,7 +343,7 @@ public class DocumentationWriter {
 	private void _writeFormField(
 		ObjectBuilder resourceObjectBuilder, String fieldName) {
 
-		ObjectBuilder objectBuilder = new ObjectBuilder();
+		ObjectBuilder objectBuilder = new JSONObjectBuilder();
 
 		_documentationMessageMapper.mapProperty(objectBuilder, fieldName);
 
@@ -390,7 +391,7 @@ public class DocumentationWriter {
 		Operation operation, ObjectBuilder objectBuilder,
 		String resourceName, String type) {
 
-		ObjectBuilder operationObjectBuilder = new ObjectBuilder();
+		ObjectBuilder operationObjectBuilder = new JSONObjectBuilder();
 
 		_documentationMessageMapper.mapOperation(
 			operationObjectBuilder, resourceName, type, operation);
@@ -438,7 +439,7 @@ public class DocumentationWriter {
 		types.forEach(
 			type -> {
 				ObjectBuilder resourceObjectBuilder =
-					new ObjectBuilder();
+					new JSONObjectBuilder();
 
 				writeResourceBiConsumer.accept(resourceObjectBuilder, type);
 

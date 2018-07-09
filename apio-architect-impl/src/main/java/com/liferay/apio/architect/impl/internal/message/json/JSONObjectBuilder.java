@@ -77,19 +77,24 @@ import java.util.stream.Stream;
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
  */
-public class JSONObjectBuilder implements ObjectBuilder<JsonObject, JsonArray> {
+public class JSONObjectBuilder implements ObjectBuilder<JsonObject> {
 
-	public JsonObject build() {
+	@Override
+	public JsonObject buildAsObject() {
 		return _jsonObject;
 	}
 
-	public FieldStep field(String name) {
+	public String build() {
+		return _jsonObject.toString();
+	}
+
+	public FieldStepImpl field(String name) {
 		return new FieldStepImpl(name, _jsonObject);
 	}
 
 	public class ArrayValueStepImpl
 		implements
-		ObjectBuilder.ArrayValueStep<JsonObject, JsonArray, JSONObjectBuilder> {
+		ObjectBuilder.ArrayValueStep<JsonObject, JSONObjectBuilder> {
 
 		public ArrayValueStepImpl(JsonArray jsonArray) {
 			_jsonArray = jsonArray;
@@ -144,14 +149,15 @@ public class JSONObjectBuilder implements ObjectBuilder<JsonObject, JsonArray> {
 
 	public class FieldStepImpl
 		implements
-		ObjectBuilder.FieldStep<JsonObject, JsonArray, JSONObjectBuilder> {
+		ObjectBuilder.FieldStep<JsonObject, JSONObjectBuilder,
+			FieldStepImpl, ArrayValueStepImpl> {
 
 		public FieldStepImpl(String name, JsonObject jsonObject) {
 			_name = name;
 			_jsonObject = jsonObject;
 		}
 
-		public ArrayValueStep arrayValue() {
+		public ArrayValueStepImpl arrayValue() {
 			JsonArray jsonArray = Optional.ofNullable(
 				_jsonObject.get(_name)
 			).filter(
@@ -171,7 +177,7 @@ public class JSONObjectBuilder implements ObjectBuilder<JsonObject, JsonArray> {
 			_jsonObject.addProperty(_name, value);
 		}
 
-		public FieldStep field(String name) {
+		public FieldStepImpl field(String name) {
 			JsonObject jsonObject = Optional.ofNullable(
 				_jsonObject.get(_name)
 			).filter(

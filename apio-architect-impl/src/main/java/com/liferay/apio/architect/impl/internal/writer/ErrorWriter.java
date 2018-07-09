@@ -14,10 +14,12 @@
 
 package com.liferay.apio.architect.impl.internal.writer;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.error.APIError;
 import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 
 import java.util.Optional;
@@ -43,7 +45,8 @@ public final class ErrorWriter {
 	public static String writeError(
 		ErrorMessageMapper errorMessageMapper, APIError apiError) {
 
-		ObjectBuilder objectBuilder = new ObjectBuilder();
+		ObjectBuilder objectBuilder
+			= new JSONObjectBuilder();
 
 		Optional<String> optional = apiError.getDescription();
 
@@ -57,9 +60,7 @@ public final class ErrorWriter {
 		errorMessageMapper.mapType(objectBuilder, apiError.getType());
 		errorMessageMapper.onFinish(objectBuilder, apiError);
 
-		JsonObject jsonObject = objectBuilder.build();
-
-		return jsonObject.toString();
+		return objectBuilder.build();
 	}
 
 	private ErrorWriter() {

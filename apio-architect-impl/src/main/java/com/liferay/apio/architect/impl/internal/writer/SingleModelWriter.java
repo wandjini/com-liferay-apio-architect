@@ -18,6 +18,7 @@ import static com.liferay.apio.architect.impl.internal.url.URLCreator.createForm
 import static com.liferay.apio.architect.impl.internal.writer.util.WriterUtil.getFieldsWriter;
 import static com.liferay.apio.architect.impl.internal.writer.util.WriterUtil.getPathOptional;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.form.Form;
@@ -27,6 +28,7 @@ import com.liferay.apio.architect.impl.internal.alias.RepresentorFunction;
 import com.liferay.apio.architect.impl.internal.alias.ResourceNameFunction;
 import com.liferay.apio.architect.impl.internal.alias.SingleModelFunction;
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 import com.liferay.apio.architect.impl.internal.request.RequestInfo;
@@ -74,7 +76,7 @@ public class SingleModelWriter<T> {
 		_singleModelMessageMapper = builder._singleModelMessageMapper;
 		_singleModelFunction = builder._singleModelFunction;
 
-		_objectBuilder = new ObjectBuilder();
+		_objectBuilder = new JSONObjectBuilder();
 	}
 
 	/**
@@ -147,9 +149,9 @@ public class SingleModelWriter<T> {
 
 		_singleModelMessageMapper.onFinish(_objectBuilder, _singleModel);
 
-		JsonObject jsonObject = _objectBuilder.build();
+		String jsonObject = _objectBuilder.build();
 
-		return Optional.of(jsonObject.toString());
+		return Optional.of(jsonObject);
 	}
 
 	public <S> void writeEmbeddedModelFields(
@@ -203,7 +205,7 @@ public class SingleModelWriter<T> {
 		operations.forEach(
 			operation -> {
 				ObjectBuilder operationObjectBuilder =
-					new ObjectBuilder();
+					new JSONObjectBuilder();
 
 				Optional<Form> formOptional = operation.getFormOptional();
 
@@ -560,7 +562,7 @@ public class SingleModelWriter<T> {
 
 		FieldsWriter<U> fieldsWriter = fieldsWriterOptional.get();
 
-		ObjectBuilder itemObjectBuilder = new ObjectBuilder();
+		ObjectBuilder itemObjectBuilder = new JSONObjectBuilder();
 
 		_writeBasicFields(fieldsWriter, itemObjectBuilder);
 
@@ -646,7 +648,7 @@ public class SingleModelWriter<T> {
 		FunctionalList<String> embeddedPathElements,
 		BaseRepresentorFunction baseRepresentorFunction) {
 
-		ObjectBuilder pageObjectBuilder = new ObjectBuilder();
+		ObjectBuilder pageObjectBuilder = new JSONObjectBuilder();
 
 		_singleModelMessageMapper.mapNestedPageItemTotalCount(
 			pageObjectBuilder, list.size());

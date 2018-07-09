@@ -20,6 +20,7 @@ import static com.liferay.apio.architect.impl.internal.url.URLCreator.createNest
 import static com.liferay.apio.architect.impl.internal.writer.util.WriterUtil.getFieldsWriter;
 import static com.liferay.apio.architect.impl.internal.writer.util.WriterUtil.getPathOptional;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.impl.internal.alias.BaseRepresentorFunction;
@@ -28,6 +29,7 @@ import com.liferay.apio.architect.impl.internal.alias.RepresentorFunction;
 import com.liferay.apio.architect.impl.internal.alias.ResourceNameFunction;
 import com.liferay.apio.architect.impl.internal.alias.SingleModelFunction;
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
 import com.liferay.apio.architect.impl.internal.pagination.PageType;
@@ -77,7 +79,7 @@ public class PageWriter<T> {
 		_resourceNameFunction = builder._resourceNameFunction;
 		_singleModelFunction = builder._singleModelFunction;
 
-		_objectBuilder = new ObjectBuilder();
+		_objectBuilder = new JSONObjectBuilder();
 	}
 
 	/**
@@ -121,9 +123,7 @@ public class PageWriter<T> {
 
 		_pageMessageMapper.onFinish(_objectBuilder, _page);
 
-		JsonObject jsonObject = _objectBuilder.build();
-
-		return jsonObject.toString();
+		return _objectBuilder.build();
 	}
 
 	/**
@@ -378,7 +378,7 @@ public class PageWriter<T> {
 
 		FieldsWriter<U> fieldsWriter = fieldsWriterOptional.get();
 
-		ObjectBuilder itemObjectBuilder = new ObjectBuilder();
+		ObjectBuilder itemObjectBuilder = new JSONObjectBuilder();
 
 		_writeBasicFields(fieldsWriter, itemObjectBuilder);
 
@@ -428,7 +428,7 @@ public class PageWriter<T> {
 
 		FieldsWriter<T> fieldsWriter = optional.get();
 
-		ObjectBuilder itemObjectBuilder = new ObjectBuilder();
+		ObjectBuilder itemObjectBuilder = new JSONObjectBuilder();
 
 		_writeBasicFields(fieldsWriter, itemObjectBuilder);
 
@@ -619,7 +619,7 @@ public class PageWriter<T> {
 		BaseRepresentorFunction baseRepresentorFunction,
 		SingleModel singleModel) {
 
-		ObjectBuilder pageObjectBuilder = new ObjectBuilder();
+		ObjectBuilder pageObjectBuilder = new JSONObjectBuilder();
 
 		_pageMessageMapper.mapNestedPageItemTotalCount(
 			pageObjectBuilder, list.size());

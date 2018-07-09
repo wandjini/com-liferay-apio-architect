@@ -26,14 +26,22 @@ import java.util.function.Function;
  * @author Javier Gamarra
  * @review
  */
-public interface ObjectBuilder<O, L> {
+public interface ObjectBuilder<O> {
 
 	/**
 	 * Returns the JSON object constructed by the JSON object builder.
 	 *
 	 * @return the JSON object
 	 */
-	public O build();
+	public O buildAsObject();
+
+	/**
+	 * Returns the string constructed by the JSON object builder.
+	 *
+	 * @return a string with the contet
+	 * @review
+	 */
+	public String build();
 
 	/**
 	 * Begins creating a field inside the JSON object.
@@ -41,7 +49,7 @@ public interface ObjectBuilder<O, L> {
 	 * @param  name the field's name
 	 * @return the builder's next step
 	 */
-	public FieldStep field(String name);
+	public <U extends ObjectBuilder.FieldStep> U field(String name);
 
 	/**
 	 * Conditionally begins creating a field inside the JSON object. If the
@@ -56,15 +64,15 @@ public interface ObjectBuilder<O, L> {
 	 *         condition is {@code false}
 	 * @return the builder's field step
 	 */
-	public default FieldStep ifElseCondition(
-		boolean condition, Function<ObjectBuilder, FieldStep> ifFunction,
-		Function<ObjectBuilder, FieldStep> elseFunction) {
+	public default <R extends ObjectBuilder, U extends ObjectBuilder.FieldStep> U ifElseCondition(
+		boolean condition, Function<R, U> ifFunction,
+		Function<R, U> elseFunction) {
 
 		if (condition) {
-			return ifFunction.apply(this);
+			return ifFunction.apply((R) this);
 		}
 		else {
-			return elseFunction.apply(this);
+			return elseFunction.apply((R) this);
 		}
 	}
 
@@ -175,7 +183,7 @@ public interface ObjectBuilder<O, L> {
 	}
 
 	public interface ArrayValueStep
-		<O, L, S extends ObjectBuilder<O, L>> {
+		<O, S extends ObjectBuilder<O>> {
 
 		public void add(Consumer<S> consumer);
 
@@ -270,14 +278,15 @@ public interface ObjectBuilder<O, L> {
 	 * #numberValue(Number)}, or {@link #booleanValue(Boolean)}).
 	 */
 	public interface FieldStep
-		<O, L, S extends ObjectBuilder<O, L>> {
+		<O, S extends ObjectBuilder<O>,
+			U extends FieldStep<O, S, U, A>, A extends ArrayValueStep<O, S>> {
 
 		/**
 		 * Begins creating a JSON array inside the field.
 		 *
 		 * @return the builder's array value step
 		 */
-		public ArrayValueStep arrayValue();
+		public A arrayValue();
 
 		/**
 		 * Creates a JSON array inside the field and populates it with the
@@ -289,14 +298,14 @@ public interface ObjectBuilder<O, L> {
 		 *        objects of the array
 		 */
 		public default void arrayValue(
-			Consumer<ArrayValueStep> consumer,
-			Consumer<ArrayValueStep>... consumers) {
+			Consumer<A> consumer,
+			Consumer<A>... consumers) {
 
-			ArrayValueStep arrayValueStep = arrayValue();
+			A arrayValueStep = arrayValue();
 
 			consumer.accept(arrayValueStep);
 
-			for (Consumer<ArrayValueStep> arrayValueStepConsumer : consumers) {
+			for (Consumer<A> arrayValueStepConsumer : consumers) {
 				arrayValueStepConsumer.accept(arrayValueStep);
 			}
 		}
@@ -314,7 +323,7 @@ public interface ObjectBuilder<O, L> {
 		 * @param  name the new field's name
 		 * @return the builder's field step
 		 */
-		public FieldStep field(String name);
+		public U field(String name);
 
 		/**
 		 * Creates a new JSON object inside the field and populates it with the
@@ -325,12 +334,12 @@ public interface ObjectBuilder<O, L> {
 		 *        JSON Object
 		 */
 		public default void fields(
-			Consumer<FieldStep> consumer, Consumer<FieldStep>... consumers) {
+			Consumer<U> consumer, Consumer<U>... consumers) {
 
-			consumer.accept(this);
+			consumer.accept((U) this);
 
-			for (Consumer<FieldStep> fieldStepConsumer : consumers) {
-				fieldStepConsumer.accept(this);
+			for (Consumer<U> fieldStepConsumer : consumers) {
+				fieldStepConsumer.accept((U) this);
 			}
 		}
 
@@ -344,14 +353,14 @@ public interface ObjectBuilder<O, L> {
 		 *         condition is {@code true}
 		 * @return the builder's field step
 		 */
-		public default FieldStep ifCondition(
-			boolean condition, Function<FieldStep, FieldStep> ifFunction) {
+		public default U ifCondition(
+			boolean condition, Function<U, U> ifFunction) {
 
 			if (condition) {
-				return ifFunction.apply(this);
+				return ifFunction.apply((U) this);
 			}
 			else {
-				return this;
+				return (U) this;
 			}
 		}
 
@@ -368,15 +377,15 @@ public interface ObjectBuilder<O, L> {
 		 *         condition is {@code false}
 		 * @return the builder's field step
 		 */
-		public default FieldStep ifElseCondition(
-			boolean condition, Function<FieldStep, FieldStep> ifFunction,
-			Function<FieldStep, FieldStep> elseFunction) {
+		public default U ifElseCondition(
+			boolean condition, Function<U, U> ifFunction,
+			Function<U, U> elseFunction) {
 
 			if (condition) {
-				return ifFunction.apply(this);
+				return ifFunction.apply((U) this);
 			}
 			else {
-				return elseFunction.apply(this);
+				return elseFunction.apply((U) this);
 			}
 		}
 
@@ -387,9 +396,9 @@ public interface ObjectBuilder<O, L> {
 		 * @param  nestedNames the list of the nested field names
 		 * @return the builder's field step
 		 */
-		public default FieldStep nestedField(
+		public default U nestedField(
 			String parentName, String... nestedNames) {
-			FieldStep fieldStep = field(parentName);
+			U fieldStep = field(parentName);
 
 			for (String nestedName : nestedNames) {
 				fieldStep = fieldStep.field(nestedName);
@@ -401,17 +410,17 @@ public interface ObjectBuilder<O, L> {
 		/**
 		 * Begins creating a new nested JSON object field, adding a prefix to
 		 * each field. This method behaves like {@link
-		 * ObjectBuilder#nestedPrefixedField(String, String, String...)}.
+		 * #nestedPrefixedField(String, String, String...)}.
 		 *
 		 * @param  prefix each field's prefix
 		 * @param  parentName the parent field's name
 		 * @param  nestedNames the list of the nested field names
 		 * @return the builder's field step
 		 */
-		public default FieldStep nestedPrefixedField(
+		public default U nestedPrefixedField(
 			String prefix, String parentName, String... nestedNames) {
 
-			FieldStep fieldStep = nestedField(prefix, parentName);
+			U fieldStep = nestedField(prefix, parentName);
 
 			for (String nestedName : nestedNames) {
 				fieldStep = fieldStep.nestedField(prefix, nestedName);
@@ -423,17 +432,17 @@ public interface ObjectBuilder<O, L> {
 		/**
 		 * Begins creating a new nested JSON object field, adding a suffix to
 		 * each field. This method behaves like {@link
-		 * ObjectBuilder#nestedSuffixedField(String, String, String...)}.
+		 * #nestedSuffixedField(String, String, String...)}.
 		 *
 		 * @param  suffix each field's suffix
 		 * @param  parentName the parent field's name
 		 * @param  nestedNames the list of the nested field names
 		 * @return the builder's field step
 		 */
-		public default FieldStep nestedSuffixedField(
+		public default U nestedSuffixedField(
 			String suffix, String parentName, String... nestedNames) {
 
-			FieldStep fieldStep = nestedField(parentName, suffix);
+			U fieldStep = nestedField(parentName, suffix);
 
 			for (String nestedName : nestedNames) {
 				fieldStep = fieldStep.nestedField(nestedName, suffix);

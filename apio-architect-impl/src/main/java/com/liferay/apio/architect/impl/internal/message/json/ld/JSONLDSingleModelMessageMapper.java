@@ -30,6 +30,7 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_SCHEMA_ORG;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
+import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 import com.liferay.apio.architect.operation.HTTPMethod;
@@ -296,16 +297,20 @@ public class JSONLDSingleModelMessageMapper<T>
 
 		Optional<String> optional = embeddedPathElements.lastOptional();
 
-		objectBuilder.ifElseCondition(
-			optional.isPresent(),
-			builder -> builder.nestedField(
-				head, _getMiddle(embeddedPathElements)
-			).field(
-				FIELD_NAME_CONTEXT
-			),
-			builder -> builder.field(FIELD_NAME_CONTEXT)
-		).arrayValue(
-		).add(
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		JSONObjectBuilder.ArrayValueStepImpl arrayValueStep =
+			(JSONObjectBuilder.ArrayValueStepImpl) jsonObjectBuilder.ifElseCondition(
+				optional.isPresent(),
+				builder -> builder.nestedField(
+					head, _getMiddle(embeddedPathElements)
+				).field(
+					FIELD_NAME_CONTEXT
+				),
+				builder -> builder.field(FIELD_NAME_CONTEXT)
+			).arrayValue(
+			);
+		arrayValueStep.add(
 			builder -> builder.field(
 				optional.orElse(head)
 			).field(
@@ -425,7 +430,9 @@ public class JSONLDSingleModelMessageMapper<T>
 	public void onFinish(
 		ObjectBuilder objectBuilder, SingleModel<T> singleModel) {
 
-		objectBuilder.field(
+		JSONObjectBuilder jsonObjectBuilder = (JSONObjectBuilder) objectBuilder;
+
+		jsonObjectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(
