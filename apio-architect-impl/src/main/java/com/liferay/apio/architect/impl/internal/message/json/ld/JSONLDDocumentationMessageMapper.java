@@ -37,7 +37,7 @@ import static com.liferay.apio.architect.operation.HTTPMethod.GET;
 
 import com.liferay.apio.architect.impl.internal.documentation.Documentation;
 import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.operation.HTTPMethod;
 import com.liferay.apio.architect.operation.Operation;
 
@@ -67,9 +67,9 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void mapDescription(
-		JSONObjectBuilder jsonObjectBuilder, String description) {
+		ObjectBuilder objectBuilder, String description) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_DESCRIPTION
 		).stringValue(
 			description
@@ -78,28 +78,28 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void mapOperation(
-		JSONObjectBuilder jsonObjectBuilder, String resourceName, String type,
+		ObjectBuilder objectBuilder, String resourceName, String type,
 		Operation operation) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			"_:" + operation.getName()
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_OPERATION
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"method"
 		).stringValue(
 			operation.getHttpMethod().toString()
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"returns"
 		).stringValue(
 			_getReturnValue(type, operation)
@@ -108,15 +108,15 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void mapProperty(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName) {
+		ObjectBuilder objectBuilder, String fieldName) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_SUPPORTED_PROPERTY
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_PROPERTY
 		).stringValue(
 			fieldName
@@ -125,21 +125,21 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void mapResource(
-		JSONObjectBuilder jsonObjectBuilder, String resourceType) {
+		ObjectBuilder objectBuilder, String resourceType) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			resourceType
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_CLASS
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TITLE
 		).stringValue(
 			resourceType
@@ -148,33 +148,33 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void mapResourceCollection(
-		JSONObjectBuilder jsonObjectBuilder, String resourceType) {
+		ObjectBuilder objectBuilder, String resourceType) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			"vocab:" + resourceType + "Collection"
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_CLASS
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"subClassOf"
 		).stringValue(
 			TYPE_COLLECTION
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"description"
 		).stringValue(
 			"A collection of " + resourceType
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TITLE
 		).stringValue(
 			resourceType + "Collection"
@@ -185,20 +185,20 @@ public class JSONLDDocumentationMessageMapper
 			FIELD_NAME_NUMBER_OF_ITEMS
 		).forEach(
 			fieldName -> {
-				JSONObjectBuilder propertyJsonObjectBuilder =
-					new JSONObjectBuilder();
+				ObjectBuilder propertyObjectBuilder =
+					new ObjectBuilder();
 
-				mapProperty(propertyJsonObjectBuilder, fieldName);
+				mapProperty(propertyObjectBuilder, fieldName);
 
 				onFinishProperty(
-					jsonObjectBuilder, propertyJsonObjectBuilder, fieldName);
+					objectBuilder, propertyObjectBuilder, fieldName);
 			}
 		);
 	}
 
 	@Override
-	public void mapTitle(JSONObjectBuilder jsonObjectBuilder, String title) {
-		jsonObjectBuilder.field(
+	public void mapTitle(ObjectBuilder objectBuilder, String title) {
+		objectBuilder.field(
 			FIELD_NAME_TITLE
 		).stringValue(
 			title
@@ -207,9 +207,9 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void onFinish(
-		JSONObjectBuilder jsonObjectBuilder, Documentation documentation) {
+		ObjectBuilder objectBuilder, Documentation documentation) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(
@@ -252,13 +252,13 @@ public class JSONLDDocumentationMessageMapper
 			)
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			"/doc"
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_API_DOCUMENTATION
@@ -267,40 +267,40 @@ public class JSONLDDocumentationMessageMapper
 
 	@Override
 	public void onFinishOperation(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder operationJsonObjectBuilder, Operation operation) {
+		ObjectBuilder documentationObjectBuilder,
+		ObjectBuilder operationObjectBuilder, Operation operation) {
 
-		documentationJsonObjectBuilder.field(
+		documentationObjectBuilder.field(
 			"supportedOperation"
 		).arrayValue(
 		).add(
-			operationJsonObjectBuilder
+			operationObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinishProperty(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder propertyJsonObjectBuilder, String formField) {
+		ObjectBuilder documentationObjectBuilder,
+		ObjectBuilder propertyObjectBuilder, String formField) {
 
-		documentationJsonObjectBuilder.field(
+		documentationObjectBuilder.field(
 			"supportedProperty"
 		).arrayValue(
 		).add(
-			propertyJsonObjectBuilder
+			propertyObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinishResource(
-		JSONObjectBuilder documentationJsonObjectBuilder,
-		JSONObjectBuilder resourceJsonObjectBuilder, String type) {
+		ObjectBuilder documentationObjectBuilder,
+		ObjectBuilder resourceObjectBuilder, String type) {
 
-		documentationJsonObjectBuilder.field(
+		documentationObjectBuilder.field(
 			"supportedClass"
 		).arrayValue(
 		).add(
-			resourceJsonObjectBuilder
+			resourceObjectBuilder
 		);
 	}
 

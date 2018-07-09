@@ -34,7 +34,7 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.impl.internal.message.json.FormMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -58,9 +58,9 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 
 	@Override
 	public void mapFormDescription(
-		JSONObjectBuilder jsonObjectBuilder, String description) {
+		ObjectBuilder objectBuilder, String description) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_DESCRIPTION
 		).stringValue(
 			description
@@ -69,9 +69,9 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 
 	@Override
 	public void mapFormField(
-		JSONObjectBuilder jsonObjectBuilder, FormField formField) {
+		ObjectBuilder objectBuilder, FormField formField) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_SUPPORTED_PROPERTY
 		).arrayValue(
 		).add(
@@ -111,9 +111,9 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 
 	@Override
 	public void mapFormTitle(
-		JSONObjectBuilder jsonObjectBuilder, String title) {
+		ObjectBuilder objectBuilder, String title) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TITLE
 		).stringValue(
 			title
@@ -121,8 +121,8 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 	}
 
 	@Override
-	public void mapFormURL(JSONObjectBuilder jsonObjectBuilder, String url) {
-		jsonObjectBuilder.field(
+	public void mapFormURL(ObjectBuilder objectBuilder, String url) {
+		objectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			url
@@ -130,14 +130,14 @@ public class JSONLDFormMessageMapper implements FormMessageMapper {
 	}
 
 	@Override
-	public void onFinish(JSONObjectBuilder jsonObjectBuilder, Form form) {
-		jsonObjectBuilder.field(
+	public void onFinish(ObjectBuilder objectBuilder, Form form) {
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_CLASS
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(

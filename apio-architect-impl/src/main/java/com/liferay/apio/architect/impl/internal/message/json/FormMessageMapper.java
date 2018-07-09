@@ -23,7 +23,7 @@ import com.liferay.apio.architect.form.FormField;
  * javax.ws.rs.ext.MessageBodyWriter} of the {@code Form} calls the {@code
  * FormMessageMapper} methods. In each method, developers should only map the
  * provided part of the resource to its representation in a JSON object. To
- * enable this, each method receives a {@link JSONObjectBuilder}.
+ * enable this, each method receives a {@link ObjectBuilder}.
  *
  * <p>
  * The method {@link #onFinish} is called when the writer finishes writing the
@@ -38,41 +38,41 @@ public interface FormMessageMapper extends MessageMapper<Form> {
 	/**
 	 * Maps the {@code Form} description to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the form
+	 * @param objectBuilder the JSON object builder for the form
 	 * @param description the {@code Form} description
 	 */
 	public default void mapFormDescription(
-		JSONObjectBuilder jsonObjectBuilder, String description) {
+		ObjectBuilder objectBuilder, String description) {
 	}
 
 	/**
 	 * Maps a form field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the form
+	 * @param objectBuilder the JSON object builder for the form
 	 * @param formField a form's field
 	 */
 	public default void mapFormField(
-		JSONObjectBuilder jsonObjectBuilder, FormField formField) {
+		ObjectBuilder objectBuilder, FormField formField) {
 	}
 
 	/**
 	 * Maps the {@code Form} title to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the form
+	 * @param objectBuilder the JSON object builder for the form
 	 * @param title the {@code Form} title
 	 */
 	public default void mapFormTitle(
-		JSONObjectBuilder jsonObjectBuilder, String title) {
+		ObjectBuilder objectBuilder, String title) {
 	}
 
 	/**
 	 * Maps a form URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the form
+	 * @param objectBuilder the JSON object builder for the form
 	 * @param url the form's URL
 	 */
 	public default void mapFormURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 }

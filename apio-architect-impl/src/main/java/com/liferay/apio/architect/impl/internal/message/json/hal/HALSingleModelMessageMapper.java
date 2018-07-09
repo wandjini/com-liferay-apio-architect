@@ -15,7 +15,7 @@
 package com.liferay.apio.architect.impl.internal.message.json.hal;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 
 import java.util.List;
@@ -45,9 +45,9 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapBooleanField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Boolean value) {
+		ObjectBuilder objectBuilder, String fieldName, Boolean value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).booleanValue(
 			value
@@ -56,10 +56,10 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Boolean> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllBooleans(
@@ -69,23 +69,23 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceBooleanField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 
 		_mapEmbeddedResourceField(
-			jsonObjectBuilder, embeddedPathElements, fieldName,
+			objectBuilder, embeddedPathElements, fieldName,
 			builder -> builder.booleanValue(value));
 	}
 
 	@Override
 	public void mapEmbeddedResourceBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Boolean> value) {
 
 		_mapEmbeddedResourceField(
-			jsonObjectBuilder, embeddedPathElements, fieldName,
+			objectBuilder, embeddedPathElements, fieldName,
 			builder -> builder.arrayValue(
 			).addAllBooleans(
 				value
@@ -94,7 +94,7 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceLink(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 
@@ -106,7 +106,7 @@ public class HALSingleModelMessageMapper<T>
 
 		String[] middle = middleStream.toArray(String[]::new);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"_embedded"
 		).ifElseCondition(
 			optional.isPresent(),
@@ -125,23 +125,23 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceNumberField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number value) {
 
 		_mapEmbeddedResourceField(
-			jsonObjectBuilder, embeddedPathElements, fieldName,
+			objectBuilder, embeddedPathElements, fieldName,
 			builder -> builder.numberValue(value));
 	}
 
 	@Override
 	public void mapEmbeddedResourceNumberListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Number> value) {
 
 		_mapEmbeddedResourceField(
-			jsonObjectBuilder, embeddedPathElements, fieldName,
+			objectBuilder, embeddedPathElements, fieldName,
 			builder -> builder.arrayValue(
 			).addAllNumbers(
 				value
@@ -150,23 +150,23 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceStringField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
 
 		_mapEmbeddedResourceField(
-			jsonObjectBuilder, embeddedPathElements, fieldName,
+			objectBuilder, embeddedPathElements, fieldName,
 			builder -> builder.stringValue(value));
 	}
 
 	@Override
 	public void mapEmbeddedResourceStringListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<String> value) {
 
 		_mapEmbeddedResourceField(
-			jsonObjectBuilder, embeddedPathElements, fieldName,
+			objectBuilder, embeddedPathElements, fieldName,
 			builder -> builder.arrayValue(
 			).addAllStrings(
 				value
@@ -175,18 +175,18 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		mapEmbeddedResourceLink(
-			jsonObjectBuilder, embeddedPathElements, "self", url);
+			objectBuilder, embeddedPathElements, "self", url);
 	}
 
 	@Override
 	public void mapLink(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String url) {
+		ObjectBuilder objectBuilder, String fieldName, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", fieldName, "href"
 		).stringValue(
 			url
@@ -195,7 +195,7 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapLinkedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		Optional<String> optional = embeddedPathElements.lastOptional();
@@ -203,7 +203,7 @@ public class HALSingleModelMessageMapper<T>
 		String head = embeddedPathElements.head();
 
 		if (!optional.isPresent()) {
-			jsonObjectBuilder.nestedField(
+			objectBuilder.nestedField(
 				"_links", head, "href"
 			).stringValue(
 				url
@@ -220,7 +220,7 @@ public class HALSingleModelMessageMapper<T>
 				String[] middle = middleList.toArray(
 					new String[middleList.size()]);
 
-				jsonObjectBuilder.field(
+				objectBuilder.field(
 					"_embedded"
 				).nestedSuffixedField(
 					"_embedded", head, middle
@@ -231,7 +231,7 @@ public class HALSingleModelMessageMapper<T>
 				);
 			}
 			else {
-				jsonObjectBuilder.field(
+				objectBuilder.field(
 					"_embedded"
 				).nestedField(
 					head, "_links", optional.get(), "href"
@@ -244,9 +244,9 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNumberField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Number value) {
+		ObjectBuilder objectBuilder, String fieldName, Number value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).numberValue(
 			value
@@ -255,10 +255,10 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNumberListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Number> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllNumbers(
@@ -267,15 +267,15 @@ public class HALSingleModelMessageMapper<T>
 	}
 
 	@Override
-	public void mapSelfURL(JSONObjectBuilder jsonObjectBuilder, String url) {
-		mapLink(jsonObjectBuilder, "self", url);
+	public void mapSelfURL(ObjectBuilder objectBuilder, String url) {
+		mapLink(objectBuilder, "self", url);
 	}
 
 	@Override
 	public void mapStringField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String value) {
+		ObjectBuilder objectBuilder, String fieldName, String value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).stringValue(
 			value
@@ -284,10 +284,10 @@ public class HALSingleModelMessageMapper<T>
 
 	@Override
 	public void mapStringListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<String> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllStrings(
@@ -296,9 +296,9 @@ public class HALSingleModelMessageMapper<T>
 	}
 
 	private void _mapEmbeddedResourceField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
-		Consumer<JSONObjectBuilder.FieldStep> consumer) {
+		Consumer<ObjectBuilder.FieldStep> consumer) {
 
 		Optional<String> optional = embeddedPathElements.lastOptional();
 
@@ -308,7 +308,7 @@ public class HALSingleModelMessageMapper<T>
 
 		String[] middle = middleStream.toArray(String[]::new);
 
-		JSONObjectBuilder.FieldStep builderStep = jsonObjectBuilder.field(
+		ObjectBuilder.FieldStep builderStep = objectBuilder.field(
 			"_embedded"
 		).ifElseCondition(
 			optional.isPresent(),

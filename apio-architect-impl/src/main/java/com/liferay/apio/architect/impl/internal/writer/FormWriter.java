@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.FormField;
 import com.liferay.apio.architect.impl.internal.message.json.FormMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.request.RequestInfo;
 
 import java.util.List;
@@ -57,30 +57,30 @@ public class FormWriter {
 	 * @return the JSON representation of the {@code Form}
 	 */
 	public String write() {
-		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder objectBuilder = new ObjectBuilder();
 
 		String url = createFormURL(_requestInfo.getApplicationURL(), _form);
 
-		_formMessageMapper.mapFormURL(jsonObjectBuilder, url);
+		_formMessageMapper.mapFormURL(objectBuilder, url);
 
 		String title = _form.getTitle(_requestInfo.getAcceptLanguage());
 
-		_formMessageMapper.mapFormTitle(jsonObjectBuilder, title);
+		_formMessageMapper.mapFormTitle(objectBuilder, title);
 
 		String description = _form.getDescription(
 			_requestInfo.getAcceptLanguage());
 
-		_formMessageMapper.mapFormDescription(jsonObjectBuilder, description);
+		_formMessageMapper.mapFormDescription(objectBuilder, description);
 
 		List<FormField> formFields = _form.getFormFields();
 
 		formFields.forEach(
 			formField -> _formMessageMapper.mapFormField(
-				jsonObjectBuilder, formField));
+				objectBuilder, formField));
 
-		_formMessageMapper.onFinish(jsonObjectBuilder, _form);
+		_formMessageMapper.onFinish(objectBuilder, _form);
 
-		JsonObject jsonObject = jsonObjectBuilder.build();
+		JsonObject jsonObject = objectBuilder.build();
 
 		return jsonObject.toString();
 	}

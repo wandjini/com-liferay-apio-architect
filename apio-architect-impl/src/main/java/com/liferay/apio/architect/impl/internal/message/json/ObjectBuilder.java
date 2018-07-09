@@ -78,7 +78,7 @@ import java.util.stream.Stream;
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
  */
-public class JSONObjectBuilder {
+public class ObjectBuilder {
 
 	/**
 	 * Returns the JSON object constructed by the JSON object builder.
@@ -113,8 +113,8 @@ public class JSONObjectBuilder {
 	 * @return the builder's field step
 	 */
 	public FieldStep ifElseCondition(
-		boolean condition, Function<JSONObjectBuilder, FieldStep> ifFunction,
-		Function<JSONObjectBuilder, FieldStep> elseFunction) {
+		boolean condition, Function<ObjectBuilder, FieldStep> ifFunction,
+		Function<ObjectBuilder, FieldStep> elseFunction) {
 
 		if (condition) {
 			return ifFunction.apply(this);
@@ -241,12 +241,12 @@ public class JSONObjectBuilder {
 		 *
 		 * @param consumer the consumer that creates the new JSON object
 		 */
-		public void add(Consumer<JSONObjectBuilder> consumer) {
-			JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
+		public void add(Consumer<ObjectBuilder> consumer) {
+			ObjectBuilder objectBuilder = new ObjectBuilder();
 
-			consumer.accept(jsonObjectBuilder);
+			consumer.accept(objectBuilder);
 
-			add(jsonObjectBuilder);
+			add(objectBuilder);
 		}
 
 		/**
@@ -259,12 +259,12 @@ public class JSONObjectBuilder {
 		 */
 		@SafeVarargs
 		public final void add(
-			Consumer<JSONObjectBuilder> consumer,
-			Consumer<JSONObjectBuilder>... consumers) {
+			Consumer<ObjectBuilder> consumer,
+			Consumer<ObjectBuilder>... consumers) {
 
 			add(consumer);
 
-			for (Consumer<JSONObjectBuilder> jsonObjectBuilderConsumer :
+			for (Consumer<ObjectBuilder> jsonObjectBuilderConsumer :
 					consumers) {
 
 				add(jsonObjectBuilderConsumer);
@@ -275,11 +275,11 @@ public class JSONObjectBuilder {
 		 * Adds the JSON object, created by the provided JSON object builder, to
 		 * the JSON array.
 		 *
-		 * @param jsonObjectBuilder the JSON object builder containing the JSON
+		 * @param objectBuilder the JSON object builder containing the JSON
 		 *        object to add to the JSON array
 		 */
-		public void add(JSONObjectBuilder jsonObjectBuilder) {
-			_jsonArray.add(jsonObjectBuilder.build());
+		public void add(ObjectBuilder objectBuilder) {
+			_jsonArray.add(objectBuilder.build());
 		}
 
 		/**
@@ -530,7 +530,7 @@ public class JSONObjectBuilder {
 		/**
 		 * Begins creating a new nested JSON object field, adding a prefix to
 		 * each field. This method behaves like {@link
-		 * JSONObjectBuilder#nestedPrefixedField(String, String, String...)}.
+		 * ObjectBuilder#nestedPrefixedField(String, String, String...)}.
 		 *
 		 * @param  prefix each field's prefix
 		 * @param  parentName the parent field's name
@@ -552,7 +552,7 @@ public class JSONObjectBuilder {
 		/**
 		 * Begins creating a new nested JSON object field, adding a suffix to
 		 * each field. This method behaves like {@link
-		 * JSONObjectBuilder#nestedSuffixedField(String, String, String...)}.
+		 * ObjectBuilder#nestedSuffixedField(String, String, String...)}.
 		 *
 		 * @param  suffix each field's suffix
 		 * @param  parentName the parent field's name
@@ -581,14 +581,14 @@ public class JSONObjectBuilder {
 		}
 
 		/**
-		 * Adds the JSON object created by another {@link JSONObjectBuilder}.
+		 * Adds the JSON object created by another {@link ObjectBuilder}.
 		 *
-		 * @param  jsonObjectBuilder the {@link JSONObjectBuilder} whose JSON
+		 * @param  objectBuilder the {@link ObjectBuilder} whose JSON
 		 *         object is going to be added
 		 * @review
 		 */
-		public void objectValue(JSONObjectBuilder jsonObjectBuilder) {
-			JsonObject jsonObject = jsonObjectBuilder._jsonObject;
+		public void objectValue(ObjectBuilder objectBuilder) {
+			JsonObject jsonObject = objectBuilder._jsonObject;
 
 			_jsonObject.add(_name, jsonObject);
 		}

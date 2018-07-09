@@ -29,7 +29,7 @@ import java.util.Optional;
  * javax.ws.rs.ext.MessageBodyWriter} of the {@code Page} calls the {@code
  * PageMessageMapper} methods. In each method, developers should only map the
  * provided part of the resource to its representation in a JSON object. To
- * enable this, each method receives a {@link JSONObjectBuilder}.
+ * enable this, each method receives a {@link ObjectBuilder}.
  *
  * <p>
  * The method {@link #onFinish} is called when the writer finishes writing the
@@ -65,80 +65,80 @@ public interface PageMessageMapper<T>
 	/**
 	 * Maps a collection URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param url the collection's URL
 	 */
 	public default void mapCollectionURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps the current page's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param url the current page's URL
 	 */
 	public default void mapCurrentPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps the first page's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param url the first page's URL
 	 */
 	public default void mapFirstPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps a resource operation form's URL to its JSON object representation.
-	 *  @param jsonObjectBuilder the JSON object builder for the
+	 *  @param objectBuilder the JSON object builder for the
 	 *        operation
 	 * @param url the operation form's URL
 	 */
 	@Override
 	public default void mapFormURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
 			getSingleModelMessageMapperOptional();
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapFormURL(
-				jsonObjectBuilder, url));
+				objectBuilder, url));
 	}
 
 	/**
 	 * Maps a resource operation's method to its JSON object representation.
-	 *  @param jsonObjectBuilder the JSON object builder for the
+	 *  @param objectBuilder the JSON object builder for the
 	 *        operation
 	 * @param httpMethod the operation's method
 	 */
 	@Override
 	public default void mapHTTPMethod(
-		JSONObjectBuilder jsonObjectBuilder, HTTPMethod httpMethod) {
+		ObjectBuilder objectBuilder, HTTPMethod httpMethod) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
 			getSingleModelMessageMapperOptional();
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapHTTPMethod(
-				jsonObjectBuilder, httpMethod));
+				objectBuilder, httpMethod));
 	}
 
 	/**
 	 * Maps a resource's boolean field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemBooleanField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName,
 		Boolean value) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -147,20 +147,20 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapBooleanField(
-					itemJSONObjectBuilder, fieldName, value));
+					itemObjectBuilder, fieldName, value));
 	}
 
 	/**
 	 * Maps a resource's boolean list field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemBooleanListField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName,
 		List<Boolean> value) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -169,22 +169,22 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapBooleanListField(
-					itemJSONObjectBuilder, fieldName, value));
+					itemObjectBuilder, fieldName, value));
 	}
 
 	/**
 	 * Maps an embedded resource's boolean field to its JSON object
 	 * representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemEmbeddedResourceBooleanField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 
@@ -194,7 +194,7 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceBooleanField(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					value));
 	}
 
@@ -202,15 +202,15 @@ public interface PageMessageMapper<T>
 	 * Maps an embedded resource's boolean list field to its JSON object
 	 * representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemEmbeddedResourceBooleanListField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Boolean> value) {
 
@@ -220,22 +220,22 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceBooleanListField(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					value));
 	}
 
 	/**
 	 * Maps an embedded resource link to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param url the link's URL
 	 */
 	public default void mapItemEmbeddedResourceLink(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 
@@ -245,22 +245,22 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceLink(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					url));
 	}
 
 	/**
 	 * Maps an embedded resource number field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param number the field's value
 	 */
 	public default void mapItemEmbeddedResourceNumberField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number number) {
 
@@ -270,7 +270,7 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceNumberField(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					number));
 	}
 
@@ -278,15 +278,15 @@ public interface PageMessageMapper<T>
 	 * Maps an embedded resource's number list field to its JSON object
 	 * representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemEmbeddedResourceNumberListField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Number> value) {
 
@@ -296,22 +296,22 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceNumberListField(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					value));
 	}
 
 	/**
 	 * Maps an embedded resource string field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the json object builder for the page
-	 * @param itemJSONObjectBuilder the json object builder for the item
+	 * @param pageObjectBuilder the json object builder for the page
+	 * @param itemObjectBuilder the json object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param string the field's value
 	 */
 	public default void mapItemEmbeddedResourceStringField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String string) {
 
@@ -321,7 +321,7 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceStringField(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					string));
 	}
 
@@ -329,15 +329,15 @@ public interface PageMessageMapper<T>
 	 * Maps an embedded resource's string list field to its JSON object
 	 * representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemEmbeddedResourceStringListField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<String> value) {
 
@@ -347,21 +347,21 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceStringListField(
-					itemJSONObjectBuilder, embeddedPathElements, fieldName,
+					itemObjectBuilder, embeddedPathElements, fieldName,
 					value));
 	}
 
 	/**
 	 * Maps embedded resource types to their JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param types the resource types
 	 */
 	public default void mapItemEmbeddedResourceTypes(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, List<String> types) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -370,20 +370,20 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceTypes(
-					itemJSONObjectBuilder, embeddedPathElements, types));
+					itemObjectBuilder, embeddedPathElements, types));
 	}
 
 	/**
 	 * Maps an embedded resource URL to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param url the resource's URL
 	 */
 	public default void mapItemEmbeddedResourceURL(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -392,40 +392,40 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapEmbeddedResourceURL(
-					itemJSONObjectBuilder, embeddedPathElements, url));
+					itemObjectBuilder, embeddedPathElements, url));
 	}
 
 	/**
 	 * Maps a resource link to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param url the link's URL
 	 */
 	public default void mapItemLink(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName, String url) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName, String url) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
 			getSingleModelMessageMapperOptional();
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapLink(
-				itemJSONObjectBuilder, fieldName, url));
+				itemObjectBuilder, fieldName, url));
 	}
 
 	/**
 	 * Maps a linked resource URL to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param url the resource's URL
 	 */
 	public default void mapItemLinkedResourceURL(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -434,20 +434,20 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapLinkedResourceURL(
-					itemJSONObjectBuilder, embeddedPathElements, url));
+					itemObjectBuilder, embeddedPathElements, url));
 	}
 
 	/**
 	 * Maps a resource number field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param number the field's value
 	 */
 	public default void mapItemNumberField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName,
 		Number number) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -455,20 +455,20 @@ public interface PageMessageMapper<T>
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapNumberField(
-				itemJSONObjectBuilder, fieldName, number));
+				itemObjectBuilder, fieldName, number));
 	}
 
 	/**
 	 * Maps a resource's number list field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemNumberListField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName,
 		List<Number> value) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -477,39 +477,39 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapNumberListField(
-					itemJSONObjectBuilder, fieldName, value));
+					itemObjectBuilder, fieldName, value));
 	}
 
 	/**
 	 * Maps a resource URL to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param url the resource's URL
 	 */
 	public default void mapItemSelfURL(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String url) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String url) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
 			getSingleModelMessageMapperOptional();
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapSelfURL(
-				itemJSONObjectBuilder, url));
+				itemObjectBuilder, url));
 	}
 
 	/**
 	 * Maps a resource string field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param string the field's value
 	 */
 	public default void mapItemStringField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName,
 		String string) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -517,20 +517,20 @@ public interface PageMessageMapper<T>
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapStringField(
-				itemJSONObjectBuilder, fieldName, string));
+				itemObjectBuilder, fieldName, string));
 	}
 
 	/**
 	 * Maps a resource's string list field to its JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapItemStringListField(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, String fieldName,
 		List<String> value) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
@@ -539,111 +539,111 @@ public interface PageMessageMapper<T>
 		optional.ifPresent(
 			singleModelMessageMapper ->
 				singleModelMessageMapper.mapStringListField(
-					itemJSONObjectBuilder, fieldName, value));
+					itemObjectBuilder, fieldName, value));
 	}
 
 	/**
 	 * Maps the total number of elements in the collection to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param totalCount the total number of elements in the collection
 	 */
 	public default void mapItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 	}
 
 	/**
 	 * Maps resource types to their JSON object representation.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param types the resource types
 	 */
 	public default void mapItemTypes(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, List<String> types) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, List<String> types) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
 			getSingleModelMessageMapperOptional();
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.mapTypes(
-				itemJSONObjectBuilder, types));
+				itemObjectBuilder, types));
 	}
 
 	/**
 	 * Maps the last page's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param url the last page's URL
 	 */
 	public default void mapLastPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps the total number of elements in a nested collection to its JSON
 	 * object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the nested
+	 * @param objectBuilder the JSON object builder for the nested
 	 *        collection
 	 * @param totalCount the total number of elements in the collection
 	 */
 	public default void mapNestedPageItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 	}
 
 	/**
 	 * Maps the next page's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param url the next page's URL
 	 */
 	public default void mapNextPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps the page count to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param count the number of elements in the page
 	 */
 	public default void mapPageCount(
-		JSONObjectBuilder jsonObjectBuilder, int count) {
+		ObjectBuilder objectBuilder, int count) {
 	}
 
 	/**
 	 * Maps the previous page's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the page
+	 * @param objectBuilder the JSON object builder for the page
 	 * @param url the previous page's URL
 	 */
 	public default void mapPreviousPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Finishes the operation. This is the final operation-mapper method the
 	 * writer calls.
 	 *
-	 * @param resourceJSONObjectBuilder the JSON object builder for the page
-	 * @param operationJSONObjectBuilder the JSON object builder for the
+	 * @param resourceObjectBuilder the JSON object builder for the page
+	 * @param operationObjectBuilder the JSON object builder for the
 	 *        operation
 	 * @param operation the operation
 	 */
 	@Override
 	public default void onFinish(
-		JSONObjectBuilder resourceJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
+		ObjectBuilder resourceObjectBuilder,
+		ObjectBuilder operationObjectBuilder, Operation operation) {
 
 		Optional<SingleModelMessageMapper<T>> optional =
 			getSingleModelMessageMapperOptional();
 
 		optional.ifPresent(
 			singleModelMessageMapper -> singleModelMessageMapper.onFinish(
-				resourceJSONObjectBuilder, operationJSONObjectBuilder,
+				resourceObjectBuilder, operationObjectBuilder,
 				operation));
 	}
 
@@ -651,30 +651,30 @@ public interface PageMessageMapper<T>
 	 * Finishes the item. This is the final page message mapper method the
 	 * writer calls for the item.
 	 *
-	 * @param pageJSONObjectBuilder the JSON object builder for the page
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param pageObjectBuilder the JSON object builder for the page
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param singleModel the single model
 	 */
 	public default void onFinishItem(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<T> singleModel) {
 	}
 
 	/**
 	 * Finishes a nested collection. This is the final nested-collection-mapper
 	 * method the writer calls.
 	 *
-	 * @param singleModelJSONObjectBuilder the JSON object builder for the root
+	 * @param singleModelObjectBuilder the JSON object builder for the root
 	 *        model
-	 * @param collectionJsonObjectBuilder the JSON object builder for the
+	 * @param collectionObjectBuilder the JSON object builder for the
 	 *        collection
 	 * @param fieldName the collection's field name
 	 * @param list the collection
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 */
 	public default void onFinishNestedCollection(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder collectionJsonObjectBuilder, String fieldName,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder collectionObjectBuilder, String fieldName,
 		List<?> list, FunctionalList<String> embeddedPathElements) {
 	}
 
@@ -682,14 +682,14 @@ public interface PageMessageMapper<T>
 	 * Finishes a nested collection item. This is the final
 	 * nested-collection-item-mapper method the writer calls.
 	 *
-	 * @param collectionJsonObjectBuilder the JSON object builder for the
+	 * @param collectionObjectBuilder the JSON object builder for the
 	 *        collection
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param singleModel the single model
 	 */
 	public default void onFinishNestedCollectionItem(
-		JSONObjectBuilder collectionJsonObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<?> singleModel) {
+		ObjectBuilder collectionObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<?> singleModel) {
 	}
 
 }

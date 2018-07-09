@@ -18,7 +18,7 @@ import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.error.APIError;
 import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 
 import java.util.Optional;
 
@@ -43,21 +43,21 @@ public final class ErrorWriter {
 	public static String writeError(
 		ErrorMessageMapper errorMessageMapper, APIError apiError) {
 
-		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder objectBuilder = new ObjectBuilder();
 
 		Optional<String> optional = apiError.getDescription();
 
 		optional.ifPresent(
 			description -> errorMessageMapper.mapDescription(
-				jsonObjectBuilder, description));
+				objectBuilder, description));
 
 		errorMessageMapper.mapStatusCode(
-			jsonObjectBuilder, apiError.getStatusCode());
-		errorMessageMapper.mapTitle(jsonObjectBuilder, apiError.getTitle());
-		errorMessageMapper.mapType(jsonObjectBuilder, apiError.getType());
-		errorMessageMapper.onFinish(jsonObjectBuilder, apiError);
+			objectBuilder, apiError.getStatusCode());
+		errorMessageMapper.mapTitle(objectBuilder, apiError.getTitle());
+		errorMessageMapper.mapType(objectBuilder, apiError.getType());
+		errorMessageMapper.onFinish(objectBuilder, apiError);
 
-		JsonObject jsonObject = jsonObjectBuilder.build();
+		JsonObject jsonObject = objectBuilder.build();
 
 		return jsonObject.toString();
 	}

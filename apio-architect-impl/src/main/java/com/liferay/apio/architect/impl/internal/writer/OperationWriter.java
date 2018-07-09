@@ -17,7 +17,7 @@ package com.liferay.apio.architect.impl.internal.writer;
 import static com.liferay.apio.architect.impl.internal.url.URLCreator.createFormURL;
 
 import com.liferay.apio.architect.form.Form;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.OperationMapper;
 import com.liferay.apio.architect.impl.internal.request.RequestInfo;
 import com.liferay.apio.architect.operation.Operation;
@@ -34,32 +34,32 @@ public class OperationWriter {
 
 	public OperationWriter(
 		OperationMapper operationMapper, RequestInfo requestInfo,
-		JSONObjectBuilder jsonObjectBuilder) {
+		ObjectBuilder objectBuilder) {
 
 		_operationMapper = operationMapper;
 		_requestInfo = requestInfo;
-		_jsonObjectBuilder = jsonObjectBuilder;
+		_objectBuilder = objectBuilder;
 	}
 
 	public void write(Operation operation) {
-		JSONObjectBuilder operationJSONObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder operationObjectBuilder = new ObjectBuilder();
 
 		Optional<Form> formOptional = operation.getFormOptional();
 
 		formOptional.map(
 			form -> createFormURL(_requestInfo.getApplicationURL(), form)
 		).ifPresent(
-			url -> _operationMapper.mapFormURL(operationJSONObjectBuilder, url)
+			url -> _operationMapper.mapFormURL(operationObjectBuilder, url)
 		);
 
 		_operationMapper.mapHTTPMethod(
-			operationJSONObjectBuilder, operation.getHttpMethod());
+			operationObjectBuilder, operation.getHttpMethod());
 
 		_operationMapper.onFinish(
-			_jsonObjectBuilder, operationJSONObjectBuilder, operation);
+			_objectBuilder, operationObjectBuilder, operation);
 	}
 
-	private final JSONObjectBuilder _jsonObjectBuilder;
+	private final ObjectBuilder _objectBuilder;
 	private final OperationMapper _operationMapper;
 	private final RequestInfo _requestInfo;
 

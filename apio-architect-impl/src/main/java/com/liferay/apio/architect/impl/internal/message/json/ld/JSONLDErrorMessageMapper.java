@@ -21,7 +21,7 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.MEDIA_TYPE;
 
 import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -45,9 +45,9 @@ public class JSONLDErrorMessageMapper implements ErrorMessageMapper {
 
 	@Override
 	public void mapDescription(
-		JSONObjectBuilder jsonObjectBuilder, String description) {
+		ObjectBuilder objectBuilder, String description) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_DESCRIPTION
 		).stringValue(
 			description
@@ -56,9 +56,9 @@ public class JSONLDErrorMessageMapper implements ErrorMessageMapper {
 
 	@Override
 	public void mapStatusCode(
-		JSONObjectBuilder jsonObjectBuilder, Integer statusCode) {
+		ObjectBuilder objectBuilder, Integer statusCode) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_STATUS_CODE
 		).numberValue(
 			statusCode
@@ -66,8 +66,8 @@ public class JSONLDErrorMessageMapper implements ErrorMessageMapper {
 	}
 
 	@Override
-	public void mapTitle(JSONObjectBuilder jsonObjectBuilder, String title) {
-		jsonObjectBuilder.field(
+	public void mapTitle(ObjectBuilder objectBuilder, String title) {
+		objectBuilder.field(
 			FIELD_NAME_TITLE
 		).stringValue(
 			title
@@ -75,8 +75,8 @@ public class JSONLDErrorMessageMapper implements ErrorMessageMapper {
 	}
 
 	@Override
-	public void mapType(JSONObjectBuilder jsonObjectBuilder, String type) {
-		jsonObjectBuilder.field(
+	public void mapType(ObjectBuilder objectBuilder, String type) {
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			type

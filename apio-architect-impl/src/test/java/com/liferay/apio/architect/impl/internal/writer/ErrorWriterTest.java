@@ -25,7 +25,7 @@ import static org.hamcrest.core.Is.is;
 
 import com.liferay.apio.architect.error.APIError;
 import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.test.util.json.Conditions;
 
 import java.lang.reflect.Constructor;
@@ -90,9 +90,9 @@ public class ErrorWriterTest {
 
 		@Override
 		public void mapDescription(
-			JSONObjectBuilder jsonObjectBuilder, String description) {
+			ObjectBuilder objectBuilder, String description) {
 
-			jsonObjectBuilder.field(
+			objectBuilder.field(
 				"description"
 			).stringValue(
 				description
@@ -101,9 +101,9 @@ public class ErrorWriterTest {
 
 		@Override
 		public void mapStatusCode(
-			JSONObjectBuilder jsonObjectBuilder, Integer statusCode) {
+			ObjectBuilder objectBuilder, Integer statusCode) {
 
-			jsonObjectBuilder.field(
+			objectBuilder.field(
 				"status"
 			).numberValue(
 				statusCode
@@ -112,9 +112,9 @@ public class ErrorWriterTest {
 
 		@Override
 		public void mapTitle(
-			JSONObjectBuilder jsonObjectBuilder, String title) {
+			ObjectBuilder objectBuilder, String title) {
 
-			jsonObjectBuilder.field(
+			objectBuilder.field(
 				"title"
 			).stringValue(
 				title
@@ -122,8 +122,8 @@ public class ErrorWriterTest {
 		}
 
 		@Override
-		public void mapType(JSONObjectBuilder jsonObjectBuilder, String type) {
-			jsonObjectBuilder.field(
+		public void mapType(ObjectBuilder objectBuilder, String type) {
+			objectBuilder.field(
 				"type"
 			).stringValue(
 				type
@@ -132,9 +132,9 @@ public class ErrorWriterTest {
 
 		@Override
 		public void onFinish(
-			JSONObjectBuilder jsonObjectBuilder, APIError apiError) {
+			ObjectBuilder objectBuilder, APIError apiError) {
 
-			jsonObjectBuilder.field(
+			objectBuilder.field(
 				"end"
 			).booleanValue(
 				true

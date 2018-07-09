@@ -33,7 +33,7 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_SCHEMA_ORG;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 import com.liferay.apio.architect.pagination.Page;
@@ -74,16 +74,16 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapCollectionURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		_singleModelMessageMapper.mapSelfURL(jsonObjectBuilder, url);
+		_singleModelMessageMapper.mapSelfURL(objectBuilder, url);
 	}
 
 	@Override
 	public void mapCurrentPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			FIELD_NAME_VIEW, FIELD_NAME_ID
 		).stringValue(
 			url
@@ -92,9 +92,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapFirstPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			FIELD_NAME_VIEW, FIELD_NAME_FIRST
 		).stringValue(
 			url
@@ -103,9 +103,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TOTAL_ITEMS
 		).numberValue(
 			totalCount
@@ -114,9 +114,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapLastPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			FIELD_NAME_VIEW, FIELD_NAME_LAST
 		).stringValue(
 			url
@@ -125,9 +125,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapNestedPageItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TOTAL_ITEMS
 		).numberValue(
 			totalCount
@@ -136,9 +136,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapNextPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			FIELD_NAME_VIEW, FIELD_NAME_NEXT
 		).stringValue(
 			url
@@ -146,8 +146,8 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 	}
 
 	@Override
-	public void mapPageCount(JSONObjectBuilder jsonObjectBuilder, int count) {
-		jsonObjectBuilder.field(
+	public void mapPageCount(ObjectBuilder objectBuilder, int count) {
+		objectBuilder.field(
 			FIELD_NAME_NUMBER_OF_ITEMS
 		).numberValue(
 			count
@@ -156,9 +156,9 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapPreviousPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			FIELD_NAME_VIEW, FIELD_NAME_PREVIOUS
 		).stringValue(
 			url
@@ -166,8 +166,8 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 	}
 
 	@Override
-	public void onFinish(JSONObjectBuilder jsonObjectBuilder, Page<T> page) {
-		jsonObjectBuilder.field(
+	public void onFinish(ObjectBuilder objectBuilder, Page<T> page) {
+		objectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(
@@ -179,14 +179,14 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 			arrayBuilder -> arrayBuilder.addString(URL_HYDRA_PROFILE)
 		);
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			FIELD_NAME_VIEW, FIELD_NAME_TYPE
 		).arrayValue(
 		).addString(
 			TYPE_PARTIAL_COLLECTION_VIEW
 		);
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).arrayValue(
 		).addString(
@@ -196,47 +196,47 @@ public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void onFinishItem(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<T> singleModel) {
 
-		pageJSONObjectBuilder.field(
+		pageObjectBuilder.field(
 			FIELD_NAME_MEMBER
 		).arrayValue(
 		).add(
-			itemJSONObjectBuilder
+			itemObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinishNestedCollection(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder collectionJsonObjectBuilder, String fieldName,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder collectionObjectBuilder, String fieldName,
 		List<?> list, FunctionalList<String> embeddedPathElements) {
 
-		collectionJsonObjectBuilder.field(
+		collectionObjectBuilder.field(
 			FIELD_NAME_TYPE
 		).arrayValue(
 		).addString(
 			TYPE_COLLECTION
 		);
 
-		singleModelJSONObjectBuilder.nestedField(
+		singleModelObjectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).objectValue(
-			collectionJsonObjectBuilder
+			collectionObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinishNestedCollectionItem(
-		JSONObjectBuilder collectionJsonObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<?> singleModel) {
+		ObjectBuilder collectionObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<?> singleModel) {
 
-		collectionJsonObjectBuilder.field(
+		collectionObjectBuilder.field(
 			FIELD_NAME_MEMBER
 		).arrayValue(
 		).add(
-			itemJSONObjectBuilder
+			itemObjectBuilder
 		);
 	}
 

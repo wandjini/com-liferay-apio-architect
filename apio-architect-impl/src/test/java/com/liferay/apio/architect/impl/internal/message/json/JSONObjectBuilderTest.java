@@ -47,8 +47,8 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingAddAllOnAnArrayValueCreatesAValidJsonArray() {
-		JSONObjectBuilder.ArrayValueStep arrayValueStep =
-			_jsonObjectBuilder.field(
+		ObjectBuilder.ArrayValueStep arrayValueStep =
+			_objectBuilder.field(
 				"array"
 			).arrayValue();
 
@@ -78,7 +78,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingAddConsumerCreatesAValidJsonArray() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"array"
 		).arrayValue(
 		).add(
@@ -100,19 +100,19 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingAddJsonObjectBuilderCreatesAValidJsonArray() {
-		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder objectBuilder = new ObjectBuilder();
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"solution"
 		).numberValue(
 			42
 		);
 
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"array"
 		).arrayValue(
 		).add(
-			jsonObjectBuilder
+			objectBuilder
 		);
 
 		Matcher<JsonElement> isAJsonArrayWithElements = is(
@@ -126,8 +126,8 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingAddOnAnArrayValueCreatesAValidJsonArray() {
-		JSONObjectBuilder.ArrayValueStep arrayValueStep =
-			_jsonObjectBuilder.field(
+		ObjectBuilder.ArrayValueStep arrayValueStep =
+			_objectBuilder.field(
 				"array"
 			).arrayValue();
 
@@ -150,7 +150,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingAddVarargConsumersCreatesAValidJsonArray() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"array"
 		).arrayValue(
 		).add(
@@ -180,7 +180,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingArrayValueCreatesAJsonArray() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"array"
 		).arrayValue();
 
@@ -193,7 +193,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingArrayValueWithConsumersCreatesAValidJsonArray() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"array"
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.addString("first"),
@@ -216,7 +216,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingBooleanValueCreatesABoolean() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"solution"
 		).booleanValue(
 			true
@@ -230,7 +230,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFalseIfElseConditionCreatesACorrectField() {
-		_jsonObjectBuilder.ifElseCondition(
+		_objectBuilder.ifElseCondition(
 			false, builder -> builder.field("true"),
 			builder -> builder.field("solution")
 		).numberValue(
@@ -242,7 +242,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldAndFalseIfConditionCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"first"
 		).ifCondition(
 			false, builder -> builder.field("solution")
@@ -258,7 +258,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldAndFalseIfElseConditionCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"first"
 		).ifElseCondition(
 			false, builder -> builder.field("true"),
@@ -275,7 +275,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldAndNestedPrefixedFieldCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"solution"
 		).nestedPrefixedField(
 			"prefix", "first", "second", "third"
@@ -291,7 +291,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldAndNestedSuffixedFieldCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"solution"
 		).nestedSuffixedField(
 			"suffix", "first", "second", "third"
@@ -306,7 +306,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldAndTrueIfConditionCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"first"
 		).ifCondition(
 			true, builder -> builder.field("solution")
@@ -322,7 +322,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldAndTrueIfElseConditionCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"first"
 		).ifElseCondition(
 			true, builder -> builder.field("solution"),
@@ -339,7 +339,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldCreatesACorrectField() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"solution"
 		).numberValue(
 			42
@@ -350,7 +350,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingFieldsWithConsumersCreatesAValidJsonObject() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"object"
 		).fields(
 			builder -> builder.field(
@@ -380,7 +380,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingNestedFieldCreatesACorrectNestedField() {
-		_jsonObjectBuilder.nestedField(
+		_objectBuilder.nestedField(
 			"the", "solution"
 		).numberValue(
 			42
@@ -393,7 +393,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingNestedPrefixedFieldCreatesACorrectField() {
-		_jsonObjectBuilder.nestedPrefixedField(
+		_objectBuilder.nestedPrefixedField(
 			"prefix", "first", "second", "third"
 		).numberValue(
 			42
@@ -404,7 +404,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingNestedSuffixedFieldCreatesACorrectField() {
-		_jsonObjectBuilder.nestedSuffixedField(
+		_objectBuilder.nestedSuffixedField(
 			"suffix", "first", "second", "third"
 		).numberValue(
 			42
@@ -415,7 +415,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingNumberValueCreatesANumber() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"solution"
 		).numberValue(
 			42
@@ -426,7 +426,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingStringValueCreatesAString() {
-		_jsonObjectBuilder.field(
+		_objectBuilder.field(
 			"solution"
 		).stringValue(
 			"forty-two"
@@ -441,7 +441,7 @@ public class JSONObjectBuilderTest {
 
 	@Test
 	public void testInvokingTrueIfElseConditionCreatesACorrectField() {
-		_jsonObjectBuilder.ifElseCondition(
+		_objectBuilder.ifElseCondition(
 			true, builder -> builder.field("solution"),
 			builder -> builder.field("false")
 		).numberValue(
@@ -452,7 +452,7 @@ public class JSONObjectBuilderTest {
 	}
 
 	protected JsonObject getJsonObject() {
-		return _jsonObjectBuilder.build();
+		return _objectBuilder.build();
 	}
 
 	protected Matcher<JsonElement> isAJsonObjectWithTheFirst() {
@@ -495,7 +495,7 @@ public class JSONObjectBuilderTest {
 
 	private final Matcher<JsonElement> _aJsonObjectWithTheSolution =
 		aJsonObjectWhere("solution", is(aJsonInt(equalTo(42))));
-	private final JSONObjectBuilder _jsonObjectBuilder =
-		new JSONObjectBuilder();
+	private final ObjectBuilder _objectBuilder =
+		new ObjectBuilder();
 
 }

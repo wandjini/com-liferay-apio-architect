@@ -20,7 +20,7 @@ package com.liferay.apio.architect.impl.internal.message.json;
  * javax.ws.rs.ext.MessageBodyWriter} calls the {@code MessageMapper} methods.
  * In each method, developers should only map the provided part of the resource
  * to its representation in a JSON object. To enable this, each method receives
- * a {@link JSONObjectBuilder}.
+ * a {@link ObjectBuilder}.
  *
  * @author Alejandro Hernández
  * @param  <T> The type of message this mapper handles
@@ -38,10 +38,10 @@ public interface MessageMapper<T> {
 	 * Finishes the mapping. This is the final mapper method the writer should
 	 * call.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the message
+	 * @param objectBuilder the JSON object builder for the message
 	 * @param t the message
 	 */
-	public default void onFinish(JSONObjectBuilder jsonObjectBuilder, T t) {
+	public default void onFinish(ObjectBuilder objectBuilder, T t) {
 	}
 
 }

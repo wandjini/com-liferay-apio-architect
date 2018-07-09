@@ -27,7 +27,7 @@ import com.liferay.apio.architect.consumer.TriConsumer;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.impl.internal.documentation.Documentation;
 import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
 import com.liferay.apio.architect.impl.internal.request.RequestInfo;
 import com.liferay.apio.architect.operation.HTTPMethod;
@@ -84,9 +84,9 @@ public class DocumentationWriter {
 	 * @return the JSON representation of the {@code Documentation}
 	 */
 	public String write() {
-		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder objectBuilder = new ObjectBuilder();
 
-		_writeDocumentationMetadata(jsonObjectBuilder);
+		_writeDocumentationMetadata(objectBuilder);
 
 		Map<String, Representor> representors =
 			_documentation.getRepresentors();
@@ -95,7 +95,7 @@ public class DocumentationWriter {
 
 		itemRoutesMap.forEach(
 			(name, itemRoutes) -> _writeRoute(
-				jsonObjectBuilder, name, representors.get(name),
+				objectBuilder, name, representors.get(name),
 				_documentationMessageMapper::mapResource,
 				this::_writeItemOperations,
 				resourceJsonObjectBuilder -> _writeAllFields(
@@ -125,15 +125,15 @@ public class DocumentationWriter {
 
 		collectionResources.forEach(
 			name -> _writeRoute(
-				jsonObjectBuilder, name, representors.get(name),
+				objectBuilder, name, representors.get(name),
 				_documentationMessageMapper::mapResourceCollection,
 				this::_writePageOperations,
 				__ -> {
 				}));
 
-		_documentationMessageMapper.onFinish(jsonObjectBuilder, _documentation);
+		_documentationMessageMapper.onFinish(objectBuilder, _documentation);
 
-		JsonObject jsonObject = jsonObjectBuilder.build();
+		JsonObject jsonObject = objectBuilder.build();
 
 		return jsonObject.toString();
 	}
@@ -297,7 +297,7 @@ public class DocumentationWriter {
 	}
 
 	private void _writeAllFields(
-		Representor representor, JSONObjectBuilder resourceJsonObjectBuilder) {
+		Representor representor, ObjectBuilder resourceObjectBuilder) {
 
 		Stream<String> fieldNamesStream = _calculateNestableFieldNames(
 			representor);
@@ -311,47 +311,47 @@ public class DocumentationWriter {
 		fieldNamesStream = Stream.concat(
 			fieldNamesStream, relatedCollectionsNamesStream);
 
-		_writeFields(fieldNamesStream, resourceJsonObjectBuilder);
+		_writeFields(fieldNamesStream, resourceObjectBuilder);
 	}
 
 	private void _writeDocumentationMetadata(
-		JSONObjectBuilder jsonObjectBuilder) {
+		ObjectBuilder objectBuilder) {
 
 		Optional<String> apiTitleOptional =
 			_documentation.getAPITitleOptional();
 
 		apiTitleOptional.ifPresent(
 			title -> _documentationMessageMapper.mapTitle(
-				jsonObjectBuilder, title));
+				objectBuilder, title));
 
 		Optional<String> apiDescriptionOptional =
 			_documentation.getAPIDescriptionOptional();
 
 		apiDescriptionOptional.ifPresent(
 			description -> _documentationMessageMapper.mapDescription(
-				jsonObjectBuilder, description));
+				objectBuilder, description));
 	}
 
 	private void _writeFields(
-		Stream<String> fields, JSONObjectBuilder resourceJsonObjectBuilder) {
+		Stream<String> fields, ObjectBuilder resourceObjectBuilder) {
 
 		fields.distinct().forEach(
-			field -> _writeFormField(resourceJsonObjectBuilder, field));
+			field -> _writeFormField(resourceObjectBuilder, field));
 	}
 
 	private void _writeFormField(
-		JSONObjectBuilder resourceJsonObjectBuilder, String fieldName) {
+		ObjectBuilder resourceObjectBuilder, String fieldName) {
 
-		JSONObjectBuilder jsonObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder objectBuilder = new ObjectBuilder();
 
-		_documentationMessageMapper.mapProperty(jsonObjectBuilder, fieldName);
+		_documentationMessageMapper.mapProperty(objectBuilder, fieldName);
 
 		_documentationMessageMapper.onFinishProperty(
-			resourceJsonObjectBuilder, jsonObjectBuilder, fieldName);
+			resourceObjectBuilder, objectBuilder, fieldName);
 	}
 
 	private void _writeItemOperations(
-		String name, String type, JSONObjectBuilder resourceJsonObjectBuilder) {
+		String name, String type, ObjectBuilder resourceObjectBuilder) {
 
 		Map<String, ItemRoutes> itemRoutesMap = _documentation.getItemRoutes();
 
@@ -365,7 +365,7 @@ public class DocumentationWriter {
 					GET, getOperationName, false);
 
 				_writeOperation(
-					getOperation, resourceJsonObjectBuilder, name, type);
+					getOperation, resourceObjectBuilder, name, type);
 
 				String updateOperationName = name + "/update";
 
@@ -373,7 +373,7 @@ public class DocumentationWriter {
 					updateOperationName, itemRoutes.getFormOptional(), PUT);
 
 				_writeOperation(
-					updateOperation, resourceJsonObjectBuilder, name, type);
+					updateOperation, resourceObjectBuilder, name, type);
 
 				String deleteOperationName = name + "/delete";
 
@@ -381,27 +381,27 @@ public class DocumentationWriter {
 					DELETE, deleteOperationName);
 
 				_writeOperation(
-					deleteOperation, resourceJsonObjectBuilder, name, type);
+					deleteOperation, resourceObjectBuilder, name, type);
 			}
 		);
 	}
 
 	private void _writeOperation(
-		Operation operation, JSONObjectBuilder jsonObjectBuilder,
+		Operation operation, ObjectBuilder objectBuilder,
 		String resourceName, String type) {
 
-		JSONObjectBuilder operationJsonObjectBuilder = new JSONObjectBuilder();
+		ObjectBuilder operationObjectBuilder = new ObjectBuilder();
 
 		_documentationMessageMapper.mapOperation(
-			operationJsonObjectBuilder, resourceName, type, operation);
+			operationObjectBuilder, resourceName, type, operation);
 
 		_documentationMessageMapper.onFinishOperation(
-			jsonObjectBuilder, operationJsonObjectBuilder, operation);
+			objectBuilder, operationObjectBuilder, operation);
 	}
 
 	private void _writePageOperations(
 		String resource, String type,
-		JSONObjectBuilder resourceJsonObjectBuilder) {
+		ObjectBuilder resourceObjectBuilder) {
 
 		Map<String, CollectionRoutes> collectionRoutesMap =
 			_documentation.getCollectionRoutes();
@@ -412,7 +412,7 @@ public class DocumentationWriter {
 			collectionRoutes -> {
 				_writeOperation(
 					new OperationImpl(GET, resource, true),
-					resourceJsonObjectBuilder, resource, type);
+					resourceObjectBuilder, resource, type);
 
 				String operationName = resource + "/create";
 
@@ -420,35 +420,35 @@ public class DocumentationWriter {
 					operationName, collectionRoutes.getFormOptional(), POST);
 
 				_writeOperation(
-					createOperation, resourceJsonObjectBuilder, resource, type);
+					createOperation, resourceObjectBuilder, resource, type);
 			}
 		);
 	}
 
 	private void _writeRoute(
-		JSONObjectBuilder jsonObjectBuilder, String name,
+		ObjectBuilder objectBuilder, String name,
 		Representor representor,
-		BiConsumer<JSONObjectBuilder, String> writeResourceBiConsumer,
-		TriConsumer<String, String, JSONObjectBuilder>
+		BiConsumer<ObjectBuilder, String> writeResourceBiConsumer,
+		TriConsumer<String, String, ObjectBuilder>
 			writeOperationsTriConsumer,
-		Consumer<JSONObjectBuilder> writeFieldsRepresentor) {
+		Consumer<ObjectBuilder> writeFieldsRepresentor) {
 
 		List<String> types = representor.getTypes();
 
 		types.forEach(
 			type -> {
-				JSONObjectBuilder resourceJsonObjectBuilder =
-					new JSONObjectBuilder();
+				ObjectBuilder resourceObjectBuilder =
+					new ObjectBuilder();
 
-				writeResourceBiConsumer.accept(resourceJsonObjectBuilder, type);
+				writeResourceBiConsumer.accept(resourceObjectBuilder, type);
 
 				writeOperationsTriConsumer.accept(
-					name, type, resourceJsonObjectBuilder);
+					name, type, resourceObjectBuilder);
 
-				writeFieldsRepresentor.accept(resourceJsonObjectBuilder);
+				writeFieldsRepresentor.accept(resourceObjectBuilder);
 
 				_documentationMessageMapper.onFinishResource(
-					jsonObjectBuilder, resourceJsonObjectBuilder, type);
+					objectBuilder, resourceObjectBuilder, type);
 			});
 	}
 

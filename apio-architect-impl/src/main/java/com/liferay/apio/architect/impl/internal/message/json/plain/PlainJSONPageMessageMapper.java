@@ -14,7 +14,7 @@
 
 package com.liferay.apio.architect.impl.internal.message.json.plain;
 
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 import com.liferay.apio.architect.single.model.SingleModel;
@@ -47,9 +47,9 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapCollectionURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"collection"
 		).stringValue(
 			url
@@ -58,16 +58,16 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapCurrentPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		_singleModelMessageMapper.mapSelfURL(jsonObjectBuilder, url);
+		_singleModelMessageMapper.mapSelfURL(objectBuilder, url);
 	}
 
 	@Override
 	public void mapFirstPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"pages", "first"
 		).stringValue(
 			url
@@ -76,9 +76,9 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"totalNumberOfItems"
 		).numberValue(
 			totalCount
@@ -87,9 +87,9 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapLastPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"pages", "last"
 		).stringValue(
 			url
@@ -98,9 +98,9 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapNextPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"pages", "next"
 		).stringValue(
 			url
@@ -108,8 +108,8 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 	}
 
 	@Override
-	public void mapPageCount(JSONObjectBuilder jsonObjectBuilder, int count) {
-		jsonObjectBuilder.field(
+	public void mapPageCount(ObjectBuilder objectBuilder, int count) {
+		objectBuilder.field(
 			"numberOfItems"
 		).numberValue(
 			count
@@ -118,9 +118,9 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapPreviousPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"pages", "prev"
 		).stringValue(
 			url
@@ -129,14 +129,14 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void onFinishItem(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<T> singleModel) {
 
-		pageJSONObjectBuilder.field(
+		pageObjectBuilder.field(
 			"elements"
 		).arrayValue(
 		).add(
-			itemJSONObjectBuilder
+			itemObjectBuilder
 		);
 	}
 

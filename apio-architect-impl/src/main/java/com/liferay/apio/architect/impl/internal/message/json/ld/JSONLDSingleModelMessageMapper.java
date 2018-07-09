@@ -30,7 +30,7 @@ import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDCon
 import static com.liferay.apio.architect.impl.internal.message.json.ld.JSONLDConstants.URL_SCHEMA_ORG;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 import com.liferay.apio.architect.operation.HTTPMethod;
 import com.liferay.apio.architect.operation.Operation;
@@ -65,9 +65,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapBooleanField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Boolean value) {
+		ObjectBuilder objectBuilder, String fieldName, Boolean value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).booleanValue(
 			value
@@ -76,10 +76,10 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Boolean> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllBooleans(
@@ -89,11 +89,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedOperationFormURL(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder operationObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
-		operationJSONObjectBuilder.field(
+		operationObjectBuilder.field(
 			FIELD_NAME_EXPECTS
 		).stringValue(
 			url
@@ -102,11 +102,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedOperationMethod(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder operationObjectBuilder,
 		FunctionalList<String> embeddedPathElements, HTTPMethod httpMethod) {
 
-		operationJSONObjectBuilder.field(
+		operationObjectBuilder.field(
 			FIELD_NAME_METHOD
 		).stringValue(
 			httpMethod.name()
@@ -115,11 +115,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceBooleanField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -130,11 +130,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Boolean> value) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -146,11 +146,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceLink(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -161,11 +161,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceNumberField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number value) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -176,11 +176,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceNumberListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Number> value) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -192,11 +192,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceStringField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -207,11 +207,11 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceStringListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<String> value) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			fieldName
@@ -223,10 +223,10 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceTypes(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, List<String> types) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			FIELD_NAME_TYPE
@@ -238,10 +238,10 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).field(
 			FIELD_NAME_ID
@@ -251,8 +251,8 @@ public class JSONLDSingleModelMessageMapper<T>
 	}
 
 	@Override
-	public void mapFormURL(JSONObjectBuilder jsonObjectBuilder, String url) {
-		jsonObjectBuilder.field(
+	public void mapFormURL(ObjectBuilder objectBuilder, String url) {
+		objectBuilder.field(
 			FIELD_NAME_EXPECTS
 		).stringValue(
 			url
@@ -261,9 +261,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapHTTPMethod(
-		JSONObjectBuilder jsonObjectBuilder, HTTPMethod httpMethod) {
+		ObjectBuilder objectBuilder, HTTPMethod httpMethod) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_METHOD
 		).stringValue(
 			httpMethod.name()
@@ -272,9 +272,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapLink(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String url) {
+		ObjectBuilder objectBuilder, String fieldName, String url) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).stringValue(
 			url
@@ -283,12 +283,12 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapLinkedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		String head = embeddedPathElements.head();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			head, _getTail(embeddedPathElements)
 		).stringValue(
 			url
@@ -296,7 +296,7 @@ public class JSONLDSingleModelMessageMapper<T>
 
 		Optional<String> optional = embeddedPathElements.lastOptional();
 
-		jsonObjectBuilder.ifElseCondition(
+		objectBuilder.ifElseCondition(
 			optional.isPresent(),
 			builder -> builder.nestedField(
 				head, _getMiddle(embeddedPathElements)
@@ -318,9 +318,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNestedPageItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TOTAL_ITEMS
 		).numberValue(
 			totalCount
@@ -329,9 +329,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNumberField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Number value) {
+		ObjectBuilder objectBuilder, String fieldName, Number value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).numberValue(
 			value
@@ -340,10 +340,10 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNumberListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Number> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllNumbers(
@@ -352,8 +352,8 @@ public class JSONLDSingleModelMessageMapper<T>
 	}
 
 	@Override
-	public void mapSelfURL(JSONObjectBuilder jsonObjectBuilder, String url) {
-		jsonObjectBuilder.field(
+	public void mapSelfURL(ObjectBuilder objectBuilder, String url) {
+		objectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			url
@@ -362,9 +362,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapStringField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String value) {
+		ObjectBuilder objectBuilder, String fieldName, String value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).stringValue(
 			value
@@ -373,10 +373,10 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapStringListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<String> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllStrings(
@@ -386,9 +386,9 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void mapTypes(
-		JSONObjectBuilder jsonObjectBuilder, List<String> types) {
+		ObjectBuilder objectBuilder, List<String> types) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_TYPE
 		).arrayValue(
 		).addAllStrings(
@@ -398,34 +398,34 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void onFinish(
-		JSONObjectBuilder resourceJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
+		ObjectBuilder resourceObjectBuilder,
+		ObjectBuilder operationObjectBuilder, Operation operation) {
 
-		operationJSONObjectBuilder.field(
+		operationObjectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			"_:" + operation.getName()
 		);
 
-		operationJSONObjectBuilder.field(
+		operationObjectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_OPERATION
 		);
 
-		resourceJSONObjectBuilder.field(
+		resourceObjectBuilder.field(
 			FIELD_NAME_OPERATION
 		).arrayValue(
 		).add(
-			operationJSONObjectBuilder
+			operationObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinish(
-		JSONObjectBuilder jsonObjectBuilder, SingleModel<T> singleModel) {
+		ObjectBuilder objectBuilder, SingleModel<T> singleModel) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			FIELD_NAME_CONTEXT
 		).arrayValue(
 			arrayBuilder -> arrayBuilder.add(
@@ -440,65 +440,65 @@ public class JSONLDSingleModelMessageMapper<T>
 
 	@Override
 	public void onFinishEmbeddedOperation(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder operationObjectBuilder,
 		FunctionalList<String> embeddedPathElements, Operation operation) {
 
 		String head = embeddedPathElements.head();
 		String[] tail = _getTail(embeddedPathElements);
 
-		operationJSONObjectBuilder.field(
+		operationObjectBuilder.field(
 			FIELD_NAME_ID
 		).stringValue(
 			"_:" + operation.getName()
 		);
 
-		operationJSONObjectBuilder.field(
+		operationObjectBuilder.field(
 			FIELD_NAME_TYPE
 		).stringValue(
 			TYPE_OPERATION
 		);
 
-		singleModelJSONObjectBuilder.nestedField(
+		singleModelObjectBuilder.nestedField(
 			head, tail
 		).field(
 			FIELD_NAME_OPERATION
 		).arrayValue(
 		).add(
-			operationJSONObjectBuilder
+			operationObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinishNestedCollection(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder collectionJsonObjectBuilder, String fieldName,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder collectionObjectBuilder, String fieldName,
 		List<?> list, FunctionalList<String> embeddedPathElements) {
 
-		collectionJsonObjectBuilder.field(
+		collectionObjectBuilder.field(
 			FIELD_NAME_TYPE
 		).arrayValue(
 		).addString(
 			TYPE_COLLECTION
 		);
 
-		singleModelJSONObjectBuilder.nestedField(
+		singleModelObjectBuilder.nestedField(
 			embeddedPathElements.head(), _getTail(embeddedPathElements)
 		).objectValue(
-			collectionJsonObjectBuilder
+			collectionObjectBuilder
 		);
 	}
 
 	@Override
 	public void onFinishNestedCollectionItem(
-		JSONObjectBuilder collectionJsonObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<?> singleModel) {
+		ObjectBuilder collectionObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<?> singleModel) {
 
-		collectionJsonObjectBuilder.field(
+		collectionObjectBuilder.field(
 			FIELD_NAME_MEMBER
 		).arrayValue(
 		).add(
-			itemJSONObjectBuilder
+			itemObjectBuilder
 		);
 	}
 

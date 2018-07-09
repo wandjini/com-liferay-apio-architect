@@ -23,7 +23,7 @@ import com.liferay.apio.architect.operation.Operation;
  * javax.ws.rs.ext.MessageBodyWriter} call the {@code OperationMapper} methods.
  * In each method, developers should only map the provided part of the resource
  * to its representation in a JSON object. To enable this, each method receives
- * a {@link JSONObjectBuilder}.
+ * a {@link ObjectBuilder}.
  *
  * <p>
  * The method {@link #onFinish} is called when the writer finishes writing the
@@ -38,36 +38,36 @@ public interface OperationMapper {
 
 	/**
 	 * Maps a resource operation form's URL to its JSON object representation.
-	 *  @param jsonObjectBuilder the JSON object builder for the
+	 *  @param objectBuilder the JSON object builder for the
 	 *        operation
 	 * @param url the operation form's URL
 	 */
 	public default void mapFormURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps a resource operation's method to its JSON object representation.
-	 *  @param jsonObjectBuilder the JSON object builder for the
+	 *  @param objectBuilder the JSON object builder for the
 	 *        operation
 	 * @param httpMethod the operation's method
 	 */
 	public default void mapHTTPMethod(
-		JSONObjectBuilder jsonObjectBuilder, HTTPMethod httpMethod) {
+		ObjectBuilder objectBuilder, HTTPMethod httpMethod) {
 	}
 
 	/**
 	 * Finishes the operation. This is the final operation-mapper method the
 	 * writer calls.
 	 *
-	 * @param resourceJSONObjectBuilder the JSON object builder for the model
-	 * @param operationJSONObjectBuilder the JSON object builder for the
+	 * @param resourceObjectBuilder the JSON object builder for the model
+	 * @param operationObjectBuilder the JSON object builder for the
 	 *        operation
 	 * @param operation the operation
 	 */
 	public default void onFinish(
-		JSONObjectBuilder resourceJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder, Operation operation) {
+		ObjectBuilder resourceObjectBuilder,
+		ObjectBuilder operationObjectBuilder, Operation operation) {
 	}
 
 }

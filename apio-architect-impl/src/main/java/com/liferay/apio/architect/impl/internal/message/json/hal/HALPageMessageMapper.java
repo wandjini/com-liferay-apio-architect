@@ -14,7 +14,7 @@
 
 package com.liferay.apio.architect.impl.internal.message.json.hal;
 
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 import com.liferay.apio.architect.impl.internal.wiring.osgi.manager.representable.RepresentableManager;
@@ -51,9 +51,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapCollectionURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", "collection", "href"
 		).stringValue(
 			url
@@ -62,9 +62,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapCurrentPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", "self", "href"
 		).stringValue(
 			url
@@ -73,9 +73,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapFirstPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", "first", "href"
 		).stringValue(
 			url
@@ -84,9 +84,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			"total"
 		).numberValue(
 			totalCount
@@ -95,9 +95,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapLastPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", "last", "href"
 		).stringValue(
 			url
@@ -106,9 +106,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapNextPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", "next", "href"
 		).stringValue(
 			url
@@ -116,8 +116,8 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 	}
 
 	@Override
-	public void mapPageCount(JSONObjectBuilder jsonObjectBuilder, int count) {
-		jsonObjectBuilder.field(
+	public void mapPageCount(ObjectBuilder objectBuilder, int count) {
+		objectBuilder.field(
 			"count"
 		).numberValue(
 			count
@@ -126,9 +126,9 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void mapPreviousPageURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			"_links", "prev", "href"
 		).stringValue(
 			url
@@ -137,8 +137,8 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 
 	@Override
 	public void onFinishItem(
-		JSONObjectBuilder pageJSONObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<T> singleModel) {
+		ObjectBuilder pageObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<T> singleModel) {
 
 		Optional<Representor<T>> optional =
 			representableManager.getRepresentorOptional(
@@ -147,11 +147,11 @@ public class HALPageMessageMapper<T> implements PageMessageMapper<T> {
 		optional.map(
 			Representor::getTypes
 		).ifPresent(
-			types -> pageJSONObjectBuilder.nestedField(
+			types -> pageObjectBuilder.nestedField(
 				"_embedded", types.get(0)
 			).arrayValue(
 			).add(
-				itemJSONObjectBuilder
+				itemObjectBuilder
 			)
 		);
 	}

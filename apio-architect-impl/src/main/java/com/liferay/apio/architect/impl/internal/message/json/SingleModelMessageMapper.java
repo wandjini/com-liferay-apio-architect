@@ -27,7 +27,7 @@ import java.util.List;
  * javax.ws.rs.ext.MessageBodyWriter} of the {@code SingleModel} calls the
  * {@code SingleModelMessageMapper} methods. In each method, developers should
  * only map the provided part of the resource to its representation in a JSON
- * object. To enable this, each method receives a {@link JSONObjectBuilder}.
+ * object. To enable this, each method receives a {@link ObjectBuilder}.
  *
  * <p>
  * The method {@link #onFinish} is called when the writer finishes writing the
@@ -46,23 +46,23 @@ public interface SingleModelMessageMapper<T>
 	/**
 	 * Maps a resource's boolean field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapBooleanField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Boolean value) {
+		ObjectBuilder objectBuilder, String fieldName, Boolean value) {
 	}
 
 	/**
 	 * Maps a resource's boolean list field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Boolean> value) {
 	}
 
@@ -70,15 +70,15 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource operation form's URL to its JSON object
 	 * representation.
 	 *
-	 * @param singleModelJSONObjectBuilder the JSON object builder for the model
-	 * @param operationJSONObjectBuilder the JSON object builder for the
+	 * @param singleModelObjectBuilder the JSON object builder for the model
+	 * @param operationObjectBuilder the JSON object builder for the
 	 *        operation
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param url the operation form's URL
 	 */
 	public default void mapEmbeddedOperationFormURL(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder operationObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 	}
 
@@ -86,15 +86,15 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource operation's method to its JSON object
 	 * representation.
 	 *
-	 * @param singleModelJSONObjectBuilder the JSON object builder for the model
-	 * @param operationJSONObjectBuilder the JSON object builder for the
+	 * @param singleModelObjectBuilder the JSON object builder for the model
+	 * @param operationObjectBuilder the JSON object builder for the
 	 *        operation
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param httpMethod the operation's method
 	 */
 	public default void mapEmbeddedOperationMethod(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder operationObjectBuilder,
 		FunctionalList<String> embeddedPathElements, HTTPMethod httpMethod) {
 	}
 
@@ -102,13 +102,13 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource's boolean field to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapEmbeddedResourceBooleanField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 	}
@@ -117,13 +117,13 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource's boolean list field to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapEmbeddedResourceBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Boolean> value) {
 	}
@@ -131,13 +131,13 @@ public interface SingleModelMessageMapper<T>
 	/**
 	 * Maps an embedded resource's link to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param url the field's value
 	 */
 	public default void mapEmbeddedResourceLink(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 	}
@@ -146,13 +146,13 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource's number field to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapEmbeddedResourceNumberField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number value) {
 	}
@@ -161,13 +161,13 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource's number list field to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapEmbeddedResourceNumberListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Number> value) {
 	}
@@ -176,13 +176,13 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource's string field to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapEmbeddedResourceStringField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
 	}
@@ -191,13 +191,13 @@ public interface SingleModelMessageMapper<T>
 	 * Maps an embedded resource's string list field to its JSON object
 	 * representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapEmbeddedResourceStringListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<String> value) {
 	}
@@ -205,47 +205,47 @@ public interface SingleModelMessageMapper<T>
 	/**
 	 * Maps an embedded resource's types to their JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param types the resource's types
 	 */
 	public default void mapEmbeddedResourceTypes(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, List<String> types) {
 	}
 
 	/**
 	 * Maps an embedded resource's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param url the resource's URL
 	 */
 	public default void mapEmbeddedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 	}
 
 	/**
 	 * Maps a resource's link to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param url the link's URL
 	 */
 	public default void mapLink(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String url) {
+		ObjectBuilder objectBuilder, String fieldName, String url) {
 	}
 
 	/**
 	 * Maps a linked resource's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param url the resource's URL
 	 */
 	public default void mapLinkedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 	}
 
@@ -253,93 +253,93 @@ public interface SingleModelMessageMapper<T>
 	 * Maps the total number of elements in a nested collection to its JSON
 	 * object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the nested
+	 * @param objectBuilder the JSON object builder for the nested
 	 *        collection
 	 * @param totalCount the total number of elements in the collection
 	 */
 	public default void mapNestedPageItemTotalCount(
-		JSONObjectBuilder jsonObjectBuilder, int totalCount) {
+		ObjectBuilder objectBuilder, int totalCount) {
 	}
 
 	/**
 	 * Maps a resource's number field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapNumberField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Number value) {
+		ObjectBuilder objectBuilder, String fieldName, Number value) {
 	}
 
 	/**
 	 * Maps a resource's number list field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapNumberListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Number> value) {
 	}
 
 	/**
 	 * Maps a resource's URL to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param url the resource's URL
 	 */
 	public default void mapSelfURL(
-		JSONObjectBuilder jsonObjectBuilder, String url) {
+		ObjectBuilder objectBuilder, String url) {
 	}
 
 	/**
 	 * Maps a resource's string field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapStringField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String value) {
+		ObjectBuilder objectBuilder, String fieldName, String value) {
 	}
 
 	/**
 	 * Maps a resource's string list field to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param fieldName the field's name
 	 * @param value the field's value
 	 */
 	public default void mapStringListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<String> value) {
 	}
 
 	/**
 	 * Maps a resource's types to their JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param objectBuilder the JSON object builder for the model
 	 * @param types the resource's types
 	 */
 	public default void mapTypes(
-		JSONObjectBuilder jsonObjectBuilder, List<String> types) {
+		ObjectBuilder objectBuilder, List<String> types) {
 	}
 
 	/**
 	 * Finishes an embedded model's operation. This is the final
 	 * embedded-operation-mapper method the writer calls.
 	 *
-	 * @param singleModelJSONObjectBuilder the JSON object builder for the model
-	 * @param operationJSONObjectBuilder the JSON object builder for the
+	 * @param singleModelObjectBuilder the JSON object builder for the model
+	 * @param operationObjectBuilder the JSON object builder for the
 	 *        operation
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 * @param operation the operation
 	 */
 	public default void onFinishEmbeddedOperation(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder operationJSONObjectBuilder,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder operationObjectBuilder,
 		FunctionalList<String> embeddedPathElements, Operation operation) {
 	}
 
@@ -347,17 +347,17 @@ public interface SingleModelMessageMapper<T>
 	 * Finishes a nested collection. This is the final nested-collection-mapper
 	 * method the writer calls.
 	 *
-	 * @param singleModelJSONObjectBuilder the JSON object builder for the root
+	 * @param singleModelObjectBuilder the JSON object builder for the root
 	 *        model
-	 * @param collectionJsonObjectBuilder the JSON object builder for the
+	 * @param collectionObjectBuilder the JSON object builder for the
 	 *        collection
 	 * @param fieldName the collection's field name
 	 * @param list the collection
 	 * @param embeddedPathElements the current resource's embedded path elements
 	 */
 	public default void onFinishNestedCollection(
-		JSONObjectBuilder singleModelJSONObjectBuilder,
-		JSONObjectBuilder collectionJsonObjectBuilder, String fieldName,
+		ObjectBuilder singleModelObjectBuilder,
+		ObjectBuilder collectionObjectBuilder, String fieldName,
 		List<?> list, FunctionalList<String> embeddedPathElements) {
 	}
 
@@ -365,14 +365,14 @@ public interface SingleModelMessageMapper<T>
 	 * Finishes a nested collection item. This is the final
 	 * nested-collection-item-mapper method the writer calls.
 	 *
-	 * @param collectionJsonObjectBuilder the JSON object builder for the
+	 * @param collectionObjectBuilder the JSON object builder for the
 	 *        collection
-	 * @param itemJSONObjectBuilder the JSON object builder for the item
+	 * @param itemObjectBuilder the JSON object builder for the item
 	 * @param singleModel the single model
 	 */
 	public default void onFinishNestedCollectionItem(
-		JSONObjectBuilder collectionJsonObjectBuilder,
-		JSONObjectBuilder itemJSONObjectBuilder, SingleModel<?> singleModel) {
+		ObjectBuilder collectionObjectBuilder,
+		ObjectBuilder itemObjectBuilder, SingleModel<?> singleModel) {
 	}
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.apio.architect.impl.internal.message.json.plain;
 
 import com.liferay.apio.architect.impl.internal.list.FunctionalList;
-import com.liferay.apio.architect.impl.internal.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.impl.internal.message.json.ObjectBuilder;
 import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
 
 import java.util.List;
@@ -41,9 +41,9 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapBooleanField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Boolean value) {
+		ObjectBuilder objectBuilder, String fieldName, Boolean value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).booleanValue(
 			value
@@ -52,10 +52,10 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Boolean> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllBooleans(
@@ -65,13 +65,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceBooleanField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -82,13 +82,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceBooleanListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Boolean> value) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -100,13 +100,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceLink(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -117,13 +117,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceNumberField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number value) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -134,13 +134,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceNumberListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<Number> value) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -152,13 +152,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceStringField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -169,13 +169,13 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceStringListField(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		List<String> value) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			fieldName
@@ -187,12 +187,12 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapEmbeddedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).field(
 			"self"
@@ -203,9 +203,9 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapLink(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String url) {
+		ObjectBuilder objectBuilder, String fieldName, String url) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).stringValue(
 			url
@@ -214,12 +214,12 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapLinkedResourceURL(
-		JSONObjectBuilder jsonObjectBuilder,
+		ObjectBuilder objectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
 		Stream<String> tailStream = embeddedPathElements.tailStream();
 
-		jsonObjectBuilder.nestedField(
+		objectBuilder.nestedField(
 			embeddedPathElements.head(), tailStream.toArray(String[]::new)
 		).stringValue(
 			url
@@ -228,9 +228,9 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNumberField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, Number value) {
+		ObjectBuilder objectBuilder, String fieldName, Number value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).numberValue(
 			value
@@ -239,10 +239,10 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapNumberListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<Number> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllNumbers(
@@ -251,8 +251,8 @@ public class PlainJSONSingleModelMessageMapper<T>
 	}
 
 	@Override
-	public void mapSelfURL(JSONObjectBuilder jsonObjectBuilder, String url) {
-		jsonObjectBuilder.field(
+	public void mapSelfURL(ObjectBuilder objectBuilder, String url) {
+		objectBuilder.field(
 			"self"
 		).stringValue(
 			url
@@ -261,9 +261,9 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapStringField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName, String value) {
+		ObjectBuilder objectBuilder, String fieldName, String value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).stringValue(
 			value
@@ -272,10 +272,10 @@ public class PlainJSONSingleModelMessageMapper<T>
 
 	@Override
 	public void mapStringListField(
-		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		ObjectBuilder objectBuilder, String fieldName,
 		List<String> value) {
 
-		jsonObjectBuilder.field(
+		objectBuilder.field(
 			fieldName
 		).arrayValue(
 		).addAllStrings(

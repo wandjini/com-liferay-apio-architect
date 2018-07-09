@@ -21,7 +21,7 @@ import com.liferay.apio.architect.error.APIError;
  * like events. The {@link APIError} writer calls each of the {@code
  * ErrorMessageMapper} methods. In each method, developers should only map the
  * provided part of the error to its representation in a JSON object. To enable
- * this, each method receives a {@link JSONObjectBuilder}.
+ * this, each method receives a {@link ObjectBuilder}.
  *
  * <p>
  * The method {@link #onFinish} is called when the writer finishes writing the
@@ -36,41 +36,41 @@ public interface ErrorMessageMapper extends MessageMapper<APIError> {
 	/**
 	 * Maps an error description to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the error
+	 * @param objectBuilder the JSON object builder for the error
 	 * @param description the error's description
 	 */
 	public default void mapDescription(
-		JSONObjectBuilder jsonObjectBuilder, String description) {
+		ObjectBuilder objectBuilder, String description) {
 	}
 
 	/**
 	 * Maps an error status code to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the error
+	 * @param objectBuilder the JSON object builder for the error
 	 * @param statusCode the error's status code
 	 */
 	public default void mapStatusCode(
-		JSONObjectBuilder jsonObjectBuilder, Integer statusCode) {
+		ObjectBuilder objectBuilder, Integer statusCode) {
 	}
 
 	/**
 	 * Maps an error title to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the error
+	 * @param objectBuilder the JSON object builder for the error
 	 * @param title the error's title
 	 */
 	public default void mapTitle(
-		JSONObjectBuilder jsonObjectBuilder, String title) {
+		ObjectBuilder objectBuilder, String title) {
 	}
 
 	/**
 	 * Maps an error type to its JSON object representation.
 	 *
-	 * @param jsonObjectBuilder the JSON object builder for the error
+	 * @param objectBuilder the JSON object builder for the error
 	 * @param type the error's type
 	 */
 	public default void mapType(
-		JSONObjectBuilder jsonObjectBuilder, String type) {
+		ObjectBuilder objectBuilder, String type) {
 	}
 
 }
